@@ -1,0 +1,167 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup Label="ProjectConfigurations">
+    <ProjectConfiguration Include="Debug|x64">
+      <Configuration>Debug</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release|x64">
+      <Configuration>Release</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+  </ItemGroup>
+  <PropertyGroup Label="Globals">
+    <ProjectName>appImmViewer</ProjectName>
+    <ProjectGuid>{8FA5961B-3FD4-4401-8388-7785A6B4C47C}</ProjectGuid>
+    <RootNamespace>appImmViewer</RootNamespace>
+    <Keyword>Win32Proj</Keyword>
+    <WindowsTargetPlatformVersion>10.0.17763.0</WindowsTargetPlatformVersion>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="Configuration">
+    <ConfigurationType>Application</ConfigurationType>
+    <PlatformToolset>v141</PlatformToolset>
+    <CharacterSet>Unicode</CharacterSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="Configuration">
+    <ConfigurationType>Application</ConfigurationType>
+    <PlatformToolset>v141</PlatformToolset>
+    <UseOfAtl>false</UseOfAtl>
+    <CharacterSet>Unicode</CharacterSet>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
+  <ImportGroup Label="ExtensionSettings">
+  </ImportGroup>
+  <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="PropertySheets">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+    <Import Project="..\projects\windows\ImmCommonPropertySheet.props" />
+    <Import Project="..\projects\windows\ImmZLibPropertySheet.props" />
+    <Import Project="..\projects\windows\ImmOGGPropertySheet.props" />
+    <Import Project="..\projects\windows\ImmAudio360WrapperPropertySheet.props" />
+    <Import Project="..\projects\windows\ImmOpusPropertySheet.props" />
+    <Import Project="..\projects\windows\ImmPNGPropertySheet.props" />
+    <Import Project="..\projects\windows\ImmJPGPropertySheet.props" />
+    <Import Project="..\projects\windows\ImmOculusPropertySheet.props" />
+  </ImportGroup>
+  <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="PropertySheets">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+    <Import Project="..\projects\windows\ImmCommonPropertySheet.props" />
+    <Import Project="..\projects\windows\ImmZLibPropertySheet.props" />
+    <Import Project="..\projects\windows\ImmOGGPropertySheet.props" />
+    <Import Project="..\projects\windows\ImmAudio360WrapperPropertySheet.props" />
+    <Import Project="..\projects\windows\ImmOpusPropertySheet.props" />
+    <Import Project="..\projects\windows\ImmPNGPropertySheet.props" />
+    <Import Project="..\projects\windows\ImmJPGPropertySheet.props" />
+    <Import Project="..\projects\windows\ImmOculusPropertySheet.props" />
+  </ImportGroup>
+  <PropertyGroup Label="UserMacros" />
+  <PropertyGroup>
+    <_ProjectFileVersion>11.0.50727.1</_ProjectFileVersion>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <TargetName>$(ProjectName)_$(Configuration)</TargetName>
+    <OutDir>exe\</OutDir>
+    <ExecutablePath>$(ProjectDir)..\appDX11ShaderCompiler\exe;$(ExecutablePath)</ExecutablePath>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+    <TargetName>$(ProjectName)_$(Configuration)</TargetName>
+    <OutDir>exe\</OutDir>
+    <ExecutablePath>$(ProjectDir)\..\appDX11ShaderCompiler\exe;$(ExecutablePath)</ExecutablePath>
+  </PropertyGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <ClCompile>
+      <AdditionalIncludeDirectories>$(SolutionDir)..\..\</AdditionalIncludeDirectories>
+      <PreprocessorDefinitions>_WIN32_DCOM;WIN32;_DEBUG;_WINDOWS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <RuntimeLibrary>MultiThreadedDebug</RuntimeLibrary>
+      <PrecompiledHeader>
+      </PrecompiledHeader>
+      <BrowseInformation>true</BrowseInformation>
+      <Optimization>Disabled</Optimization>
+    </ClCompile>
+    <Link>
+      <AdditionalDependencies>$(IMM_ZLibLibDir)/zlibstaticd.lib;$(IMM_JPGLibDir)/jpeg.lib;$(IMM_PNGLibDir)/libpng_staticd.lib;$(IMM_Audio360LibDir)/Audio360.lib;$(IMM_OPUSLibDir)/opusenc.lib;$(IMM_OPUSLibDir)/opus.lib;$(IMM_OGGLibDir)/libogg_static.lib;$(IMM_VorbisLibDir)/libvorbis_static.lib;d3d11.lib;LibOVRKernel.lib;LibOVR.lib;LibOVRPlatform64_1.lib;ws2_32.lib;winmm.lib;opengl32.lib;../libImmPlayer/bin/x64/$(Configuration)/libImmPlayer.lib;../libImmImporter/bin/x64/$(Configuration)/libImmImporter.lib;../libCore/bin/x64/$(Configuration)/libCore.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalLibraryDirectories>../../../../../first-party-sdks/OculusSDK/1.43.0/LibOVR/Lib/Windows/x64/Debug/VS2017;../../../../../first-party-sdks/OculusSDK/1.43.0/LibOVRKernel/Lib/Windows/x64/Debug/VS2017;../../../../../first-party-sdks/OculusPlatformSDK/13.0.0/Windows;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <SubSystem>Windows</SubSystem>
+      <RandomizedBaseAddress>false</RandomizedBaseAddress>
+      <DataExecutionPrevention>
+      </DataExecutionPrevention>
+      <EntryPointSymbol>wWinMainCRTStartup</EntryPointSymbol>
+    </Link>
+    <FxCompile>
+      <ShaderModel>5.0</ShaderModel>
+      <ObjectFileOutput>$(IntDir)/%(Filename).sho</ObjectFileOutput>
+      <HeaderFileOutput>%(RelativeDir)/tmp/%(Filename)_hlsl.inc</HeaderFileOutput>
+      <VariableName>%(Filename)_hlsl</VariableName>
+      <AdditionalOptions>/Qstrip_debug /Qstrip_priv /Qstrip_reflect</AdditionalOptions>
+      <ShaderType>Vertex</ShaderType>
+    </FxCompile>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+    <ClCompile>
+      <AdditionalIncludeDirectories>$(SolutionDir)..\..\</AdditionalIncludeDirectories>
+      <PreprocessorDefinitions>_WIN32_DCOM;WIN32;NDEBUG;_WINDOWS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <RuntimeLibrary>MultiThreaded</RuntimeLibrary>
+      <PrecompiledHeader>
+      </PrecompiledHeader>
+      <DebugInformationFormat>None</DebugInformationFormat>
+    </ClCompile>
+    <Link>
+      <AdditionalDependencies>$(IMM_ZLibLibDir)/zlibstatic.lib;$(IMM_JPGLibDir)/jpeg.lib;$(IMM_PNGLibDir)/libpng_static.lib;$(IMM_Audio360LibDir)/Audio360.lib;$(IMM_OPUSLibDir)/opusenc.lib;$(IMM_OPUSLibDir)/opus.lib;$(IMM_OGGLibDir)/libogg_static.lib;$(IMM_VorbisLibDir)/libvorbis_static.lib;d3d11.lib;LibOVRKernel.lib;LibOVR.lib;LibOVRPlatform64_1.lib;ws2_32.lib;winmm.lib;opengl32.lib;../libImmPlayer/bin/x64/$(Configuration)/libImmPlayer.lib;../libImmImporter/bin/x64/$(Configuration)/libImmImporter.lib;../libCore/bin/x64/$(Configuration)/libCore.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <SubSystem>Windows</SubSystem>
+      <OptimizeReferences>true</OptimizeReferences>
+      <EnableCOMDATFolding>true</EnableCOMDATFolding>
+      <EntryPointSymbol>wWinMainCRTStartup</EntryPointSymbol>
+      <RandomizedBaseAddress>false</RandomizedBaseAddress>
+      <DataExecutionPrevention>
+      </DataExecutionPrevention>
+      <GenerateDebugInformation>false</GenerateDebugInformation>
+      <AdditionalLibraryDirectories>../../../../../first-party-sdks/OculusSDK/1.43.0/LibOVR/Lib/Windows/x64/Release/VS2017;../../../../../first-party-sdks/OculusSDK/1.43.0/LibOVRKernel/Lib/Windows/x64/Release/VS2017;../../../../../first-party-sdks/OculusPlatformSDK/13.0.0/Windows;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+    </Link>
+    <FxCompile>
+      <ShaderModel>5.0</ShaderModel>
+      <ObjectFileOutput>$(IntDir)/%(Filename).sho</ObjectFileOutput>
+      <HeaderFileOutput>%(RelativeDir)/tmp/%(Filename)_hlsl.inc</HeaderFileOutput>
+      <VariableName>%(Filename)_hlsl</VariableName>
+      <AdditionalOptions>/Qstrip_debug /Qstrip_priv /Qstrip_reflect</AdditionalOptions>
+      <ShaderType>Vertex</ShaderType>
+    </FxCompile>
+  </ItemDefinitionGroup>
+  <ItemGroup>
+    <ClCompile Include="src\mymain.cpp" />
+    <ClCompile Include="src\resolve.cpp" />
+    <ClCompile Include="src\simpleJSON\JSON.cpp" />
+    <ClCompile Include="src\simpleJSON\JSONValue.cpp" />
+    <ClCompile Include="src\viewer\piCameraD.cpp" />
+    <ClCompile Include="src\viewer\viewer.cpp" />
+    <ClCompile Include="src\settings.cpp" />
+    <ClCompile Include="src\windows\main.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <CustomBuild Include="src\shader_resolve_vs.hlsl">
+      <Command Condition="'$(Configuration)|$(Platform)'=='Release|x64'">DX11ShaderCompiler.exe %(FullPath) %(RootDir)%(Directory)/tmp/%(Filename)_hlsl.inc main vs_5_0 -DSS=0..1</Command>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">DX11ShaderCompiler.exe %(FullPath) %(RootDir)%(Directory)/tmp/%(Filename)_hlsl.inc main vs_5_0 -DSS=0..1</Command>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Release|x64'">%(RootDir)%(Directory)/tmp/%(Filename)_hlsl.inc</Outputs>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">%(RootDir)%(Directory)/tmp/%(Filename)_hlsl.inc</Outputs>
+    </CustomBuild>
+    <CustomBuild Include="src\shader_resolve_fs.hlsl">
+      <Command Condition="'$(Configuration)|$(Platform)'=='Release|x64'">DX11ShaderCompiler.exe %(FullPath) %(RootDir)%(Directory)/tmp/%(Filename)_hlsl.inc main ps_5_0 -DSS=0..1</Command>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">DX11ShaderCompiler.exe %(FullPath) %(RootDir)%(Directory)/tmp/%(Filename)_hlsl.inc main ps_5_0 -DSS=0..1</Command>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Release|x64'">%(RootDir)%(Directory)/tmp/%(Filename)_hlsl.inc</Outputs>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">%(RootDir)%(Directory)/tmp/%(Filename)_hlsl.inc</Outputs>
+    </CustomBuild>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="src\resolve.h" />
+    <ClInclude Include="src\settings.h" />
+    <ClInclude Include="src\simpleJSON\JSON.h" />
+    <ClInclude Include="src\simpleJSON\JSONValue.h" />
+    <ClInclude Include="src\viewer\piCameraD.h" />
+    <ClInclude Include="src\viewer\viewer.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="exe\settings.json" />
+  </ItemGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
+  <ImportGroup Label="ExtensionTargets">
+  </ImportGroup>
+</Project>

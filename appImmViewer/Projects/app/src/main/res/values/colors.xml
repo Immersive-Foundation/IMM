@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="colorPrimary">#fed334</color>
+    <color name="colorPrimaryDark">#fed334</color> <!-- Quill yellow -->
+    <color name="colorAccent">#7ff342b9</color> <!-- Quill pink -->
+    <color name="colorAccentDark">#f342b9</color>
+    <!--<color name="colorAccent">#f342b9</color> &lt;!&ndash; Quill pink &ndash;&gt;-->
+    <!--<color name="colorAccent">#2cc0fc</color> &lt;!&ndash; Quill blue &ndash;&gt;-->
+    <color name="photo_tint">#7f101010</color>
+</resources>

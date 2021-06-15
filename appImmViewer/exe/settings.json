@@ -1,0 +1,53 @@
+{
+  "Rendering": {
+    "EnableVR": true,
+    "RenderingAPI": "OpenGL",
+    "// DirectX": "",
+    "RenderingTechnique": "Static",
+    "// Pretessellated": "",
+    "PixelDensity": 1.0,
+    "Supersampling": 1
+  },
+
+  "File": {
+    "Load": [ "" ],
+    "Load2": [ "" ]
+  },
+
+  "Window": {
+    "FullScreen": false,
+    "PositionX": 0,
+    "PositionY": 0,
+    "Width": 1920,
+    "Height": 1080
+  },
+
+  "Playback": {
+    "Location": {
+      "Rotation": [ 0, 0, 0, 1 ],
+      "Scale": 1,
+      "Flip": "N",
+      "Translation": [ 0, 0, 0 ]
+    },
+    "PlayerSpawn": {
+      "Custom": {
+        "Rotation": [ 0, 0, 0, 1 ],
+        "Scale": 1,
+        "Flip": "N",
+        "Translation": [ 0, 0, 0 ]
+      },
+      "Location": "Default"
+    }
+  },
+
+  "Sound": {
+    "Device": "Default"
+  },
+
+  "UI": {
+    "EnableHaptics": true,
+    "LeftHanded": false,
+    "UISoundVolume": 0.5
+  }
+
+}

@@ -1,0 +1,11 @@
+include 'libCore'
+project(':libCore').projectDir = file('../../libCore')
+
+include 'libImmImporter'
+project(':libImmImporter').projectDir = file('../../libImmImporter')
+
+include 'libImmPlayer'
+project(':libImmPlayer').projectDir = file('../../libImmPlayer')
+
+include 'appImmViewer'
+project(':appImmViewer').projectDir = file('../../appImmViewer')

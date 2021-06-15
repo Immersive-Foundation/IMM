@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+          xmlns:tools="http://schemas.android.com/tools"
+          package="com.facebook.arvr.demoquillplayer"
+          android:installLocation="auto"
+    >
+    <!-- Headless manifest for the vr_only Quill Player -->
+    <uses-sdk tools:overrideLibrary="com.oculus.vrshell.sdk" />
+    <uses-feature android:name="oculus.hardware.handtracking" android:required="false"/>
+
+<application
+    android:allowBackup="false"
+    android:icon="@drawable/ic_launcher_foreground"
+    android:label="@string/app_name"
+    android:theme="@style/MainTheme" >
+
+    <meta-data android:name="com.samsung.android.vr.application.mode" android:value="vr_only"/>
+
+    <!-- launchMode is set to singleTask because there should never be multiple copies of the app running -->
+    <!-- Theme.Black.NoTitleBar.Fullscreen gives solid black instead of a (bad stereoscopic) gradient on app transition -->
+    <activity
+        android:name="com.facebook.arvr.demoquillplayer.QuillPlayerVrActivity"
+        android:label="@string/app_name"
+        android:theme="@android:style/Theme.Black.NoTitleBar.Fullscreen"
+        android:launchMode="singleTask"
+        android:screenOrientation="landscape"
+        android:configChanges="orientation|screenSize|keyboard|keyboardHidden|navigation"
+        android:excludeFromRecents="true"
+        >
+
+        <!-- Tell NativeActivity the name of the .so -->
+        <meta-data android:name="android.app.lib_name" android:value="quillplayer" />
+
+        <meta-data android:name="com.oculus.vr.focusaware" android:value="true" />
+
+        <intent-filter>
+        	<action android:name="android.intent.action.MAIN" />
+            <!--<action android:name="com.facbeook.arvr.demoquillplayer.QuillPlayerVrActivity.VIEW" />-->
+            <category android:name="android.intent.category.LAUNCHER" />
+        </intent-filter>
+
+    </activity>
+
+</application>
+</manifest>

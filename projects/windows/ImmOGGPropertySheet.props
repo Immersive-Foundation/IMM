@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ImportGroup Label="PropertySheets" />
+  <PropertyGroup Label="UserMacros">
+    <IMM_OGGIncDir>..\..\..\..\..\third-party\quill_external_libs\libvorbis\include</IMM_OGGIncDir>
+    <IMM_OGGLibDir>..\..\..\..\..\third-party\quill_external_libs\libogg\lib\x64_v141_$(Configuration)_MT</IMM_OGGLibDir>
+    <IMM_VorbisLibDir>..\..\..\..\..\third-party\quill_external_libs\libvorbis\lib\x64_v141_$(Configuration)_MT</IMM_VorbisLibDir>
+  </PropertyGroup>
+</Project>
