@@ -1,0 +1,138 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup Label="ProjectConfigurations">
+    <ProjectConfiguration Include="Debug|x64">
+      <Configuration>Debug</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release|x64">
+      <Configuration>Release</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="src\IUnityGraphicsD3D11.h" />
+    <ClInclude Include="src\IUnityGraphicsD3D12.h" />
+    <ClInclude Include="src\IUnityInterface.h" />
+    <ClInclude Include="src\IUnityGraphics.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="src\main.cpp" />
+  </ItemGroup>
+  <PropertyGroup Label="Globals">
+    <ProjectName>appImmUnity</ProjectName>
+    <ProjectGuid>{F7CFEF5A-54BD-42E8-A59E-54ABAEB4EA9C}</ProjectGuid>
+    <RootNamespace>appImmUnity</RootNamespace>
+    <Keyword>Win32Proj</Keyword>
+    <WindowsTargetPlatformVersion>10.0</WindowsTargetPlatformVersion>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="Configuration">
+    <ConfigurationType>DynamicLibrary</ConfigurationType>
+    <PlatformToolset>v142</PlatformToolset>
+    <CharacterSet>Unicode</CharacterSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="Configuration">
+    <ConfigurationType>DynamicLibrary</ConfigurationType>
+    <PlatformToolset>v142</PlatformToolset>
+    <CharacterSet>Unicode</CharacterSet>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
+  <ImportGroup Label="ExtensionSettings">
+  </ImportGroup>
+  <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="PropertySheets">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+    <Import Project="..\projects\windows\ImmCommonPropertySheet.props" />
+    <Import Project="..\projects\windows\ImmZLibPropertySheet.props" />
+    <Import Project="..\projects\windows\ImmOGGPropertySheet.props" />
+    <Import Project="..\projects\windows\ImmAudio360WrapperPropertySheet.props" />
+    <Import Project="..\projects\windows\ImmOpusPropertySheet.props" />
+    <Import Project="..\projects\windows\ImmPNGPropertySheet.props" />
+    <Import Project="..\projects\windows\ImmJPGPropertySheet.props" />
+    <Import Project="..\projects\windows\ImmOculusPropertySheet.props" />
+  </ImportGroup>
+  <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="PropertySheets">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+    <Import Project="..\projects\windows\ImmCommonPropertySheet.props" />
+    <Import Project="..\projects\windows\ImmZLibPropertySheet.props" />
+    <Import Project="..\projects\windows\ImmOGGPropertySheet.props" />
+    <Import Project="..\projects\windows\ImmAudio360WrapperPropertySheet.props" />
+    <Import Project="..\projects\windows\ImmOpusPropertySheet.props" />
+    <Import Project="..\projects\windows\ImmPNGPropertySheet.props" />
+    <Import Project="..\projects\windows\ImmJPGPropertySheet.props" />
+    <Import Project="..\projects\windows\ImmOculusPropertySheet.props" />
+  </ImportGroup>
+  <PropertyGroup Label="UserMacros" />
+  <PropertyGroup>
+    <_ProjectFileVersion>12.0.30501.0</_ProjectFileVersion>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <OutDir>exe\</OutDir>
+    <TargetName>ImmUnityPlugin</TargetName>
+    <PostBuildEventUseInBuild>false</PostBuildEventUseInBuild>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+    <OutDir>exe\</OutDir>
+    <TargetName>ImmUnityPlugin</TargetName>
+    <PostBuildEventUseInBuild>false</PostBuildEventUseInBuild>
+  </PropertyGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <ClCompile>
+      <Optimization>Disabled</Optimization>
+      <PreprocessorDefinitions>WIN32;_DEBUG;_WINDOWS;_USRDLL;RENDERINGPLUGIN_EXPORTS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <RuntimeLibrary>MultiThreadedDebug</RuntimeLibrary>
+      <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
+      <AdditionalIncludeDirectories>$(SolutionDir)..\..\</AdditionalIncludeDirectories>
+    </ClCompile>
+    <Link>
+      <AdditionalDependencies>$(IMM_ZLibLibDir)/libz-static.lib;$(IMM_JPGLibDir)/jpeg.lib;$(IMM_PNGLibDir)/libpng16.lib;$(IMM_Audio360LibDir)/Audio360.lib;$(IMM_OPUSENCLibDir)/opusenc.lib;$(IMM_OPUSLibDir)/opus.lib;$(IMM_OGGLibDir)/libogg.lib;$(IMM_VorbisLibDir)/libvorbis_static.lib;d3d11.lib;ws2_32.lib;winmm.lib;opengl32.lib;../libImmPlayer/bin/x64/$(Configuration)/libImmPlayer.lib;../libImmImporter/bin/x64/$(Configuration)/libImmImporter.lib;../libImmCore/bin/x64/$(Configuration)/libImmCore.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <SubSystem>Windows</SubSystem>
+      <AdditionalLibraryDirectories>
+      </AdditionalLibraryDirectories>
+    </Link>
+    <PostBuildEvent>
+      <Command>
+      </Command>
+    </PostBuildEvent>
+    <FxCompile>
+      <ShaderModel>4.0_level_9_3</ShaderModel>
+      <VariableName>%(Filename)</VariableName>
+      <HeaderFileOutput>src/tmp/%(Filename).inc</HeaderFileOutput>
+      <ObjectFileOutput>$(IntDir)/%(Filename).sho</ObjectFileOutput>
+    </FxCompile>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+    <ClCompile>
+      <Optimization>MaxSpeed</Optimization>
+      <PreprocessorDefinitions>WIN32;NDEBUG;_WINDOWS;_USRDLL;RENDERINGPLUGIN_EXPORTS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <RuntimeLibrary>MultiThreaded</RuntimeLibrary>
+      <PrecompiledHeader>
+      </PrecompiledHeader>
+      <AdditionalIncludeDirectories>$(SolutionDir)..\..\</AdditionalIncludeDirectories>
+      <DebugInformationFormat>None</DebugInformationFormat>
+    </ClCompile>
+    <Link>
+      <AdditionalDependencies>$(IMM_ZLibLibDir)/libz-static.lib;$(IMM_JPGLibDir)/jpeg.lib;$(IMM_PNGLibDir)/libpng16.lib;$(IMM_Audio360LibDir)/Audio360.lib;$(IMM_OPUSENCLibDir)/opusenc.lib;$(IMM_OPUSLibDir)/opus.lib;$(IMM_OGGLibDir)/libogg.lib;$(IMM_VorbisLibDir)/libvorbis_static.lib;d3d11.lib;ws2_32.lib;winmm.lib;opengl32.lib;../libImmPlayer/bin/x64/$(Configuration)/libImmPlayer.lib;../libImmImporter/bin/x64/$(Configuration)/libImmImporter.lib;../libImmCore/bin/x64/$(Configuration)/libImmCore.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <SubSystem>Windows</SubSystem>
+      <OptimizeReferences>true</OptimizeReferences>
+      <EnableCOMDATFolding>true</EnableCOMDATFolding>
+      <AdditionalLibraryDirectories>
+      </AdditionalLibraryDirectories>
+    </Link>
+    <PostBuildEvent>
+      <Command>
+      </Command>
+    </PostBuildEvent>
+    <FxCompile>
+      <HeaderFileOutput>src/tmp/%(Filename).inc</HeaderFileOutput>
+      <ObjectFileOutput>$(IntDir)/%(Filename).sho</ObjectFileOutput>
+      <VariableName>%(Filename)</VariableName>
+      <AdditionalOptions>/Qstrip_debug /Qstrip_priv /Qstrip_reflect</AdditionalOptions>
+      <ShaderModel>4.0_level_9_3</ShaderModel>
+    </FxCompile>
+  </ItemDefinitionGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
+  <ImportGroup Label="ExtensionTargets">
+  </ImportGroup>
+</Project>

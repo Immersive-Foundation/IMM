@@ -1,8 +1,0 @@
-<manifest xmlns:android="http://schemas.android.com/apk/res/android"
-          package="org.linuxfoundation.imm.core">
-
-    <!-- Tell the system this app requires OpenGL ES 3.2. -->
-    <uses-feature android:glEsVersion="0x00030002" android:required="true"/>
-
-    <application />
-</manifest>

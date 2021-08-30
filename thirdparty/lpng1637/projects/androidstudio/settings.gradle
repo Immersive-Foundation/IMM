@@ -1,3 +1,0 @@
-rootProject.name = "libpng"
-include ':app'
-include ':pngandroid'

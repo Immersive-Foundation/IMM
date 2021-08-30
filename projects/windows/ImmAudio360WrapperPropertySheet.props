@@ -1,8 +1,0 @@
-<?xml version="1.0" encoding="utf-8"?>
-<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
-  <ImportGroup Label="PropertySheets" />
-  <PropertyGroup Label="UserMacros">
-    <IMM_Audio360IncDir>../../../../../first-party-sdks/Audio360_SDK/1.7.10-5ed066141c02/Audio360/include</IMM_Audio360IncDir>
-    <IMM_Audio360LibDir>../../../../../first-party-sdks/Audio360_SDK/1.7.10-5ed066141c02/Audio360/Windows/x64</IMM_Audio360LibDir>
-  </PropertyGroup>
-</Project>
