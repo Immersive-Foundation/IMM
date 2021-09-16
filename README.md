@@ -63,7 +63,7 @@ Visual Studio instructions
 
 ## On Android (for Quest)
 
-1. Download Android Studio (version \&gt; 4.1.0) from developer.android.com.
+1. Download Android Studio (version 4.1.0) from developer.android.com.
 
 2. Open folder thirdparty/lpng1637/projects/androidstudio in Android Studio first and build the project.
 
