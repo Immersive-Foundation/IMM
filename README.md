@@ -55,11 +55,7 @@ This is the dependency hierarchy for IMM import and export pipelines. Note, we d
 
 # Building the Libraries
 
-IMM can be built on Windows 10 both. Import/export libraries work on any Windows machine. The ImmViewer works both on Mono and in VR (either with Oculus RIFT or Oculus Quest + Link) or for monoscopic rendering.
-
-## On Windows
-
-Visual Studio instructions
+The ImmViewer works both on Mono and in VR (either with Oculus RIFT or Oculus Quest + Link) or for monoscopic rendering.
 
 ## On Android (for Quest)
 
@@ -69,7 +65,7 @@ Visual Studio instructions
 
 2. Open projects/android/ in android studio and build libCore, libImmImporte, libImmPlayer, appImmViewer in order.
 
-3. Connect your Quest or Quest2 Device to your computer and follow the Developer Guide to enable Developer mode on your device. There will be a Quest device showing up on your Android Studio.
+3. Connect your Quest or Quest 2 Device to your computer and follow the Developer Guide to enable Developer mode on your device. There will be a Quest device showing up on your Android Studio.
 
 4. Add a new Android App runnable in Configurations. Set the module as android.appImmViewer and click the play button on the menu bar.
 
