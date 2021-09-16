@@ -1,27 +1,26 @@
 
 # Introduction
 
-The immersive media (Imm) is an API-neutral runtime immersive media delivery format. Imm provides an efficient, extensible, interoperable format for the transmission and loading of immersive 3D and 2D animated content of mixed media types (geometry, pictures, 360 panoramas, stroke based paintings, etc).
+The immersive media (IMM) is an API-neutral runtime immersive media delivery format. IMM provides an efficient, extensible, interoperable format for the transmission and loading of immersive 3D and 2D animated content of mixed media types (geometry, pictures, 360 panoramas, stroke based paintings, etc).
 
 ## Context
 
-With the advent of VR/AR technology and platforms, filmic and animated storytelling can happen in 6 degrees of freedom, in that the viewer is located in the same space where the story is being told. Unlike traditional film or 3D animation where the final delivery format is 2D pixels, for VR storytelling the content needs to stay 3D until the very moment it is presented to the user. This requires the equivalent of a new video file format that can handle true immersion. Unlike depth-based 360 stereo video or light-fields based video, Imm is designed to transmit a true, full 3D description of the film.
+With the advent of VR/AR technology and platforms, filmic and animated storytelling can happen in 6 degrees of freedom, in that the viewer is located in the same space where the story is being told. Unlike traditional film or 3D animation where the final delivery format is 2D pixels, for VR storytelling the content needs to stay 3D until the very moment it is presented to the user. This requires the equivalent of a new video file format that can handle true immersion. Unlike depth-based 360 stereo video or light-fields based video, IMM is designed to transmit a true, full 3D description of the film.
 
-This is achieved by honoring the original 3D nature of the content. 3D models, 3D paint strokes, voxel data, etc have special containers inside Imm so that the playback engine can produce a true immersive rendition. Besides, Imm has containers for more traditional pieces of information such as 2D pictures (positioned in 3D space), audio, 360 backgrounds, etc. Imm comes also with a scenegraph and an animation timeline, so the playback engine can reproduce the film appropriately. All data types are heavily compressed for quick streaming of the data from the internet to the user's device.
+This is achieved by honoring the original 3D nature of the content. 3D models, 3D paint strokes, voxel data, and other 3D content all have special containers inside IMM so that the playback engine can produce a true immersive rendition. In addition, IMM has containers for more traditional pieces of information such as 2D pictures (positioned in 3D space), audio, 360 backgrounds, etc. IMM comes also with a scenegraph and an animation timeline, so the playback engine can reproduce the film appropriately. All data types are heavily compressed for quick streaming of the data from the internet to the user's device.
 
-The current Imm repository contains the Imm exporter and importer, as well as a reference playback engine.
+The current IMM repository contains the IMM exporter and importer, as well as a reference playback engine.
 
-Imm has been used to deliver a few dozen films, including the Tribeca film festival nominated "Rebels", the "Tale of Soda Island" series,  “The Remedy”, "Goodbye Mr. Octopus", "4 Stories" and many more.
+IMM has been used to deliver a few dozen films, including the Tribeca film festival nominated "Rebels", the "Tale of Soda Island" series,  “The Remedy”, "Goodbye Mr. Octopus", "4 Stories" and many more.
 
 
 ## IMM Basics
 
-IMM files store binary data. Scenegraph and animation metadata is uncompressed binary for easy streaming and rapid parsing of large files. This usually represents a negligible fraction of a film's file size. On the other hand, all asset data is binary compressed for efficient storage, with a specific compression tailored for each container type. The asset data is readable in random order, and it is recommended the playback engine loads it on demand and streamlined in and out of memory as needed by the scenegraph and animation timeline. The reference player in the Imm repository shows how to do this..
+IMM files store binary data. Scenegraph and animation metadata is uncompressed binary for easy streaming and rapid parsing of large files. This usually represents a negligible fraction of a film's file size. On the other hand, all asset data is binary compressed for efficient storage, with a specific compression tailored for each container type. The asset data is readable in random order, and it is recommended the playback engine loads it on demand and streamlined in and out of memory as needed by the scenegraph and animation timeline. The reference player in the Imm repository shows how to do this.
 
 ## Versioning
 
-Imm is a life format, and it's expected to evolve rapidly together with the VR animation industry. Because of that, each data container comes with a versioning schema that can be used to keep backwards compatibility as needed.
-
+IMM is a living format, and it's expected to evolve rapidly together with the VR animation industry. Because of that, each data container comes with a versioning schema that can be used to keep backwards compatibility as needed.
 
 
 # Project architecture
