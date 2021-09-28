@@ -155,7 +155,7 @@ namespace ImmExporter
 
             for (uint32_t idr = 0; idr < numDrawings; idr++)
             {
-                Drawing* drawing = lp->GetDrawing(idr);
+                const Drawing* drawing = lp->GetDrawing(idr);
                 const int numElements = drawing->GetNumElements();
                 if (numElements < 1)
                 {

@@ -22,10 +22,18 @@ public:
 		COUNT = 3
 	};
 
+    struct Requirements
+    {
+        int64_t mMaxMemory;
+        int64_t mMaxRenderCalls;
+        int64_t mMaxTriangles;
+        int64_t mMaxSoundChannels;
+    };
+
     Sequence();
     ~Sequence();
 
-    bool Init( const Type & type, uint8_t caps, const ImmCore::vec3 & backgroundColor, uint32_t frameRate);
+    bool Init( const Type & type, uint8_t caps, const Requirements & reqs, const ImmCore::vec3 & backgroundColor, uint32_t frameRate);
     void Deinit();
 
 	Type     GetType(void) const;
@@ -46,18 +54,20 @@ public:
 
     bool Recurse(Layer::IMMVisitorF v, bool doNotRecurseCollapsedGroups, bool doNotRecurseHiddenGroups, bool doNotRecurseLockedGroups, bool doPostExec);
     void GetInfo(Type *resType, bool *resHasSound, int*umSpawnAreas);
+    const Requirements * GetRequirements(void) const;
 
     ImmCore::vec3 GetBackgroundColor();
 private:
     ImmCore::piTArray<Layer*> mLayers; // just a flat array. Hierarchy is captured through the child pointers in LayerGroup
     ImmCore::vec3 mBackgroundColor;
     Layer* mRoot;
-	Type mType;
+	Sequence::Type mType;
     uint8_t mCaps;  // bit: can be grabbed
     uint32_t mFrameRate;
 	bool mAnimateOnStart;
     bool mSpawnAreaNeedsUpdate;
     const Layer* mInitialSpawnArea;
+    Sequence::Requirements mRequirements;
 };
 
 } // namespace ImmExporter

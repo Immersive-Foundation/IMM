@@ -89,33 +89,40 @@ namespace ImmImporter
 
             if (format == AssetFormat::WAV)
             {
-                piTArray<uint8_t> wav;
+                piTArray<uint8_t> data;
                 const uint64_t    size = fp->ReadUInt64();
-                wav.Init(size, true);
-                fp->ReadUInt8array(wav.GetAddress(0), size);
-                if (!ReadWAVFromMemory(me->GetSound(), &wav))
+                // TODO: use ReadWAVFromFile() instead to avoid copying data to memory
+                if( !data.Init(size, true) )
                     return false;
+                fp->ReadUInt8array(data.GetAddress(0), size);
+                if (!ReadWAVFromMemory(me->GetSound(), &data))
+                    return false;
+                data.End();
             }
             else if (format == AssetFormat::OGG)
             {
-                piTArray<uint8_t> ogg;
+                piTArray<uint8_t> data;
                 const uint64_t    size = fp->ReadUInt64();
-                ogg.Init(size, true);
-                fp->ReadUInt8array(ogg.GetAddress(0), size);
-                if (!ReadOGGFromMemory(me->GetSound(), &ogg))
+                if( !data.Init(size, true) )
                     return false;
+                fp->ReadUInt8array(data.GetAddress(0), size);
+                if (!ReadOGGFromMemory(me->GetSound(), &data))
+                    return false;
+                data.End();
             }
             else if (format == AssetFormat::OPUS)
             {
-                me->GetSound()->mNumChannels = fp->ReadUInt32();                    
+                const int numChannels = fp->ReadUInt32();                    
                 const uint64_t    size = fp->ReadUInt64();
                 uint8_t* opus = (uint8_t *)malloc(size);
                 if (opus == nullptr)
                     return false;
-                me->GetSound()->mData = opus;
-                me->GetSound()->mDataSize = size;
                 fp->ReadUInt8array(opus, size);                    
-                me->SetCompressed(true);
+
+                // Hack: put the compressed opus blob into a piWav structure, even if it's not a wav
+                piWav *snd = me->GetSound();
+                snd->Make( 0, numChannels, 8, opus, size );
+                me->SetCompressed(true); // mark this sound layer as having a blob inside piWav rather than an actual wave
             }
             else
             {

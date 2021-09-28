@@ -140,6 +140,39 @@ namespace ImmCore
 
 
 	//--------------------------------------------------------------------------------
+	// i64vec4
+	//--------------------------------------------------------------------------------
+
+	struct i64vec4
+	{
+		int64_t x, y, z, w;
+
+		i64vec4() {}
+
+		explicit i64vec4(int64_t a, int64_t b, int64_t c, int64_t d) { x = a;    y = b;    z = c;    w = d; }
+		explicit i64vec4(int64_t s)                                  { x = s;    y = s;    z = s;    w = s; }
+		explicit i64vec4(const int64_t *v)                           { x = v[0]; y = v[1]; z = v[2]; w = v[3]; }
+
+		int64_t & operator [](int i) { return ((int64_t*)this)[i]; }
+		const int64_t & operator [](int i) const { return ((int64_t*)this)[i]; }
+
+		i64vec4 & operator =(i64vec4 const & v) { x = v.x;  y = v.y;  z = v.z;  w = v.w;  return *this; }
+		i64vec4 & operator+=(int64_t const & s) { x += s;   y += s;   z += s;   w += s;   return *this; }
+		i64vec4 & operator+=(i64vec4 const & v) { x += v.x; y += v.y; z += v.z; w += v.w; return *this; }
+		i64vec4 & operator-=(int64_t const & s) { x -= s;   y -= s;   z -= s;   w -= s;   return *this; }
+		i64vec4 & operator-=(i64vec4 const & v) { x -= v.x; y -= v.y; z -= v.z; w -= v.w; return *this; }
+		i64vec4 & operator*=(int64_t const & s) { x *= s;   y *= s;   z *= s;   w *= s;   return *this; }
+		i64vec4 & operator*=(i64vec4 const & v) { x *= v.x; y *= v.y; z *= v.z; w *= v.w; return *this; }
+		i64vec4 & operator/=(int64_t const & s) { x /= s;   y /= s;   z /= s;   w /= s;   return *this; }
+		i64vec4 & operator/=(i64vec4 const & v) { x /= v.x; y /= v.y; z /= v.z; w /= v.w; return *this; }
+
+		const bool operator== (const i64vec4 & v) const { return x == v.x && y == v.y && z == v.z && w == v.w; }
+		const bool operator== (i64vec4 & v) const { return x == v.x && y == v.y && z == v.z && w == v.w; }
+		const bool operator!= (const i64vec4 & v) const { return x != v.x || y != v.y || ( z != v.z && w != v.w ); }
+		const bool operator!= (i64vec4 & v) const { return x != v.x || y != v.y || ( z != v.z && w != v.w ); }
+	};
+
+	//--------------------------------------------------------------------------------
 	// vec2
 	//--------------------------------------------------------------------------------
 

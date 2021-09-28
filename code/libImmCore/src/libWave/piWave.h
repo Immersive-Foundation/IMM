@@ -17,7 +17,7 @@ namespace ImmCore
 		bool  Init(int rate, int numChanels, int bits, uint64_t numSamples);
         bool  InitCopy(const piWav *src);
         void  InitMove(const piWav *src);
-        bool  Make(int rate, int numChanels, int bits, void *data, uint64_t dataSize);
+        void  Make(int rate, int numChanels, int bits, void *data, uint64_t dataSize);
 		void  Deinit(void);
 
         bool ReadFromDisk(const wchar_t *name);

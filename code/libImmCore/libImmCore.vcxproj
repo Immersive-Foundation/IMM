@@ -169,7 +169,6 @@
     <ClCompile>
       <AdditionalIncludeDirectories>$(IMM_OculusIncDir);$(IMM_Audio360IncDir);$(IMM_PNGIncDir);$(IMM_JPGIncDir);$(IMM_OPUSIncDir);$(IMM_OGGIncDir)</AdditionalIncludeDirectories>
       <PreprocessorDefinitions>_WIN32_DCOM;WIN32;_DEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <RuntimeLibrary>MultiThreadedDebug</RuntimeLibrary>
       <Optimization>Disabled</Optimization>
     </ClCompile>
     <Link>
@@ -200,7 +199,6 @@
     <ClCompile>
       <AdditionalIncludeDirectories>$(IMM_OculusIncDir);$(IMM_Audio360IncDir);$(IMM_PNGIncDir);$(IMM_JPGIncDir);$(IMM_OPUSIncDir);$(IMM_OGGIncDir)</AdditionalIncludeDirectories>
       <PreprocessorDefinitions>_WIN32_DCOM;WIN32;NDEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <RuntimeLibrary>MultiThreaded</RuntimeLibrary>
       <PrecompiledHeader>
       </PrecompiledHeader>
     </ClCompile>

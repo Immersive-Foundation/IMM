@@ -299,8 +299,7 @@ namespace ImmCore
 
 				//Seek back and write the WAV header
 
-				if (!dst->Make(vi.rate, vi.channels, 16, mOutput.GetAddress(0), mOutput.GetLength()))
-					return false;
+				dst->Make(vi.rate, vi.channels, 16, mOutput.GetAddress(0), mOutput.GetLength());
 			}
 			else
 			{

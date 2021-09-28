@@ -18,7 +18,7 @@ namespace ImmExporter
         void Deinit();
 
         // Only Alloc memory for the new drawing, user needs to call Drawing::Init() to initialize the drawing before editing it
-        Drawing* CreateDrawing();
+        Drawing* CreateDrawing(void);
 
         void AddFrame(uint32_t drawingID);
         void SetFrame(uint32_t frameID, uint32_t drawingID);
@@ -28,21 +28,14 @@ namespace ImmExporter
         const uint32_t GetNumFrames() const;
         inline uint32_t GetVersion() const { return mVersion; };
         inline const uint32_t* GetFramesData() const { return mFrameToDrawingMap.data(); };
-        Drawing* GetDrawing(uint32_t drawingID) const;
-        Drawing* GetDrawingInFrame(uint32_t frameID) const;
+        const Drawing* GetDrawing(uint32_t drawingID) const;
+        const Drawing* GetDrawingInFrame(uint32_t frameID) const;
         const ImmCore::bound3 GetBoundingBox(uint32_t frameID) const;
-        void SetDrawingCapacity(uint32_t num);
-        const uint32_t GetDrawingCapacity() const;
-
-        void SetFrameCapacity(uint32_t num);
-        const uint32_t GetFrameCapacity() const;
 
     private:
-        std::vector<Drawing*> mDrawings;
+        std::vector<Drawing> mDrawings;
         std::vector<uint32_t> mFrameToDrawingMap;
         uint32_t mMaxRepeatCount; // 0 repeats forever
         uint32_t mVersion;
-        uint32_t mDrawingCapacity;
-        uint32_t mFrameCapacity;
 	};
 }

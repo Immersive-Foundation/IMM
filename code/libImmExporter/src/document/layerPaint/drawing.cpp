@@ -18,7 +18,7 @@ namespace ImmExporter{
         return true;
     }
 
-    void Drawing::Destroy()
+    void Drawing::Destroy(void)
     {
         for (uint32_t i = 0; i < mNumElements; i++)
         {
@@ -28,14 +28,14 @@ namespace ImmExporter{
         //    delete mElements;
     }
 
-    Element* Drawing::GetElement(uint32_t eleIndex)
+    Element* Drawing::GetElement(uint32_t eleIndex) const
     {
         if (eleIndex >= mNumElements)
             return nullptr;
         return mElements + eleIndex;
     }
 
-    void Drawing::ComputeBoundingBox()
+    void Drawing::ComputeBoundingBox(void)
     {
         if (mNumElements < 1)
             return;
@@ -50,7 +50,7 @@ namespace ImmExporter{
         }
     }
 
-    const float Drawing::FindBiggestStroke() const
+    const float Drawing::FindBiggestStroke(void) const
     {
         // find biggest stroke in this layer
         float biggestStroke = 0.0;
@@ -62,7 +62,7 @@ namespace ImmExporter{
         return biggestStroke;
     }
 
-    const bool Drawing::GetFlipped() const
+    const bool Drawing::GetFlipped(void) const
     {
         return mFlipped;
     }

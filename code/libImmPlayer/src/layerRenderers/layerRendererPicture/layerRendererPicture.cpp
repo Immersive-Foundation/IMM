@@ -70,7 +70,7 @@ namespace ImmPlayer
 #endif
 
     // Creates a cube with 6 sides of 16x16 quads each. Note, the sides do NOT share the verties
-    // along the edges of the cube. They could, but for the purposes of generating out sky dome
+    // along the edges of the cube. They could, but for the purposes of generating our sky dome
     // it's not very important. If we ever see cracks along the edges, we can revisit this construction
     // code and connect faces appropriatelly
     bool iGenerateDome(piMesh *me, const piMesh::VertexFormat *vertexFormat)

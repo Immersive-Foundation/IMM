@@ -65,7 +65,7 @@ namespace ImmCore {
         memcpy(this, src, sizeof(piWav));
     }
 
-	bool piWav::Make(int rate, int numChanels, int bits, void *data, uint64_t dataSize)
+	void piWav::Make(int rate, int numChanels, int bits, void *data, uint64_t dataSize)
 	{
 		const int bytesPerSample = numChanels * bits / 8;
 
@@ -75,8 +75,6 @@ namespace ImmCore {
 		mData = data;
 		mDataSize = dataSize;
 		mNumSamples = dataSize / bytesPerSample;
-
-		return true;
 	}
 
 	void piWav::Deinit(void)

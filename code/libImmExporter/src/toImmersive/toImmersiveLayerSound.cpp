@@ -80,6 +80,7 @@ namespace ImmExporter
 
             if(audioType == AudioType::OPUS)
             {
+                // TODO: shall we use WriteOPUSToFile to avoid wasting memory here?
                 if (!WriteOPUSToMemory(&data, sound, opusBitrate))
                 {
                     data.End();
