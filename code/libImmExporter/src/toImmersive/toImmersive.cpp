@@ -171,8 +171,9 @@ namespace ImmExporter
         if (!file.Open(pistr2ws(iFileName), L"wb"))
             return false;
         piOStreamFile fileStream(&file);
-
-        return iExportSequence(&fileStream, Sequence, iOpusBitRate, iAudioType, onProgress);
+		const bool res = iExportSequence(&fileStream, Sequence, iOpusBitRate, iAudioType, onProgress);
+		file.Close();
+        return res;
     }
 
     bool ExportToMemory(piTArray<uint8_t>* iBuffer, Sequence* Sequence, int iOpusBitRate, tiLayerSound::AudioType iAudioType, piLog* log, std::function<void(float)> onProgress)
