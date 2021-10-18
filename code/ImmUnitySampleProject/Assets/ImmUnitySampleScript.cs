@@ -4,7 +4,7 @@ using UnityEditor;
 using System.Collections.Generic;
 
 //[ExecuteInEditMode]
-public class UseRenderingPlugin : MonoBehaviour
+public class ImmUnitySampleScript : MonoBehaviour
 {
     public GameObject Viewpoint;
     public Object InputFile;

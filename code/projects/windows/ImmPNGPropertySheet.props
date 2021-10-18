@@ -2,7 +2,18 @@
 <Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ImportGroup Label="PropertySheets" />
   <PropertyGroup Label="UserMacros">
-    <IMM_PNGIncDir>../../../libs_3rd_party/libs/png/include</IMM_PNGIncDir>
-    <IMM_PNGLibDir>../../../libs_3rd_party/libs/png/lib/x64/$(Configuration)/</IMM_PNGLibDir>
+    <IMM_PNGLibSuffix Condition="'$(OSS_PrimaryConfig)' == 'Debug'">d</IMM_PNGLibSuffix>
+    <IMM_PNGLibSuffix Condition="'$(OSS_PrimaryConfig)' == 'Release'"></IMM_PNGLibSuffix>
+    <IMM_PNGIncDir>../../../libs_3rd_party/png/include</IMM_PNGIncDir>
+    <IMM_PNGLibDir>../../../libs_3rd_party/png/lib/$(Configuration)</IMM_PNGLibDir>
   </PropertyGroup>
+  <PropertyGroup>
+    <IncludePath>$(IMM_PNGIncDir);$(IncludePath)</IncludePath>
+    <LibraryPath>$(IMM_PNGLibDir);$(LibraryPath)</LibraryPath>
+  </PropertyGroup>
+  <ItemDefinitionGroup>
+    <Link>
+      <AdditionalDependencies>libpng_static$(IMM_PNGLibSuffix).lib;%(AdditionalDependencies)</AdditionalDependencies>
+    </Link>
+  </ItemDefinitionGroup>
 </Project>

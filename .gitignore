@@ -1,0 +1,7 @@
+# skip build files
+/code/*/exe
+/code/*/bin
+/code/projects/windows/.vs
+
+# skip shader files
+**/tmp/*.inc

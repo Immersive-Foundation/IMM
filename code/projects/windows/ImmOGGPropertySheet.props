@@ -2,8 +2,16 @@
 <Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ImportGroup Label="PropertySheets" />
   <PropertyGroup Label="UserMacros">
-    <IMM_OGGIncDir>..\..\..\libs_3rd_party\libs\ogg\include;..\..\..\libs_3rd_party\libs\vorbis\include;</IMM_OGGIncDir>
-    <IMM_OGGLibDir>..\..\..\libs_3rd_party\libs\ogg\lib\x64\$(Configuration)\</IMM_OGGLibDir>
-    <IMM_VorbisLibDir>..\..\..\libs_3rd_party\libs\vorbis\lib\x64\$(Configuration)\</IMM_VorbisLibDir>
+    <IMM_OGGIncDir>../../../libs_3rd_party/ogg/include;</IMM_OGGIncDir>
+    <IMM_OGGLibDir>../../../libs_3rd_party/ogg/lib/$(Configuration)</IMM_OGGLibDir>
   </PropertyGroup>
+  <PropertyGroup>
+    <IncludePath>$(IMM_OGGIncDir);$(IncludePath)</IncludePath>
+    <LibraryPath>$(IMM_OGGLibDir);$(LibraryPath)</LibraryPath>
+  </PropertyGroup>
+  <ItemDefinitionGroup>
+    <Link>
+      <AdditionalDependencies>libogg_static.lib;libvorbis_static.lib;%(AdditionalDependencies)</AdditionalDependencies>
+    </Link>
+  </ItemDefinitionGroup>
 </Project>
