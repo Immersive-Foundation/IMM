@@ -141,6 +141,13 @@ void piMesh::DeInit( void )
     }
 }
 
+void piMesh::GetStats( int *numIndices, int *numVertices, int *vertexFormatSize ) const
+{
+    *numIndices = mFaceData.mIndexArray->mNum;
+    *numVertices = mVertexData.mVertexArray[0].mNum;
+    *vertexFormatSize = mVertexData.mVertexArray[0].mFormat.mStride;
+}
+
 bool piMesh::iWrite(piOStream & fp) const
 {
     fp.WriteUInt32(0); // version

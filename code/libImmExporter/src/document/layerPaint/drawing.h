@@ -23,19 +23,19 @@ namespace ImmExporter
         /** Get an element of the drawing.
         * \param eleIndex Index of the element.
         * \return Pointer to the element object. If the element index is out of bounds, return nullptr. */
-        Element* GetElement(uint32_t eleIndex);
+        Element* GetElement(uint32_t eleIndex) const;
 
         /** Compute bounding box of the drawing. */
-        void ComputeBoundingBox();
+        void ComputeBoundingBox(void);
 
         /** Get bounding box of the drawing.
         * Need to call ComputeBoundingBox() at least once before using this function.
         * \return Bounding box.  */
-        inline const ImmCore::bound3 GetBoundingBox() const { return mBBox; }
-        inline uint32_t GetNumElements() const { return mNumElements; }
-        void Destroy();
-        const float FindBiggestStroke() const;
-        const bool GetFlipped() const;
+        inline const ImmCore::bound3 GetBoundingBox(void) const { return mBBox; }
+        inline uint32_t GetNumElements(void) const { return mNumElements; }
+        void Destroy(void);
+        const float FindBiggestStroke(void) const;
+        const bool GetFlipped(void) const;
 
     private:
         Element* mElements = nullptr;

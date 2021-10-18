@@ -104,7 +104,6 @@
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <ClCompile>
       <PreprocessorDefinitions>BYTE=unsigned char;DYNAMICSHADERS;_WIN32_DCOM;WIN32;_DEBUG;_WINDOWS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <RuntimeLibrary>MultiThreadedDebug</RuntimeLibrary>
       <Optimization>Disabled</Optimization>
       <AdditionalIncludeDirectories>$(IMM_ZLibIncDir);..</AdditionalIncludeDirectories>
     </ClCompile>
@@ -136,7 +135,6 @@
     <ClCompile>
       <AdditionalIncludeDirectories>$(IMM_ZLibIncDir);..</AdditionalIncludeDirectories>
       <PreprocessorDefinitions>BYTE=unsigned char;DYNAMICSHADERS;_WIN32_DCOM;WIN32;NDEBUG;_WINDOWS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <RuntimeLibrary>MultiThreaded</RuntimeLibrary>
       <PrecompiledHeader>
       </PrecompiledHeader>
     </ClCompile>

@@ -78,9 +78,21 @@ namespace ImmExporter
 		fp.WriteUInt64(0);                  // size: 0 bytes
 		*/
 
+		// perf chunk
+
+		const Sequence::Requirements * reqs = sq->GetRequirements();
+		fp->WriteUInt64(0x616d726f66726550); // Signature "Performa"
+        fp->WriteUInt64(32);				 // size: 32 bytes
+        {
+
+            fp->WriteUInt64(reqs->mMaxMemory);
+            fp->WriteUInt64(reqs->mMaxRenderCalls);
+            fp->WriteUInt64(reqs->mMaxTriangles);
+            fp->WriteUInt64(reqs->mMaxSoundChannels);
+        }
+
+		//-------------------------------------
 		// tabla de sequence offsets
-
-
 		//-------------------------------------
 		{
 			fp->WriteUInt64(0x65636e6575716553); // "Sequence"
@@ -159,8 +171,9 @@ namespace ImmExporter
         if (!file.Open(pistr2ws(iFileName), L"wb"))
             return false;
         piOStreamFile fileStream(&file);
-
-        return iExportSequence(&fileStream, Sequence, iOpusBitRate, iAudioType, onProgress);
+		const bool res = iExportSequence(&fileStream, Sequence, iOpusBitRate, iAudioType, onProgress);
+		file.Close();
+        return res;
     }
 
     bool ExportToMemory(piTArray<uint8_t>* iBuffer, Sequence* Sequence, int iOpusBitRate, tiLayerSound::AudioType iAudioType, piLog* log, std::function<void(float)> onProgress)

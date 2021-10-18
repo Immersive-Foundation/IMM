@@ -13,13 +13,14 @@ Sequence::Sequence() {}
 
 Sequence::~Sequence() {}
 
-bool Sequence::Init(const Type & type, uint8_t caps, const vec3 & backgroundColor, uint32_t frameRate)
+bool Sequence::Init(const Type & type, uint8_t caps, const Requirements & reqs, const vec3 & backgroundColor, uint32_t frameRate)
 {
     mBackgroundColor = backgroundColor;
 	mType = type;
 	mCaps = caps;
     mSpawnAreaNeedsUpdate = false;
     mFrameRate = frameRate;
+    mRequirements = reqs;
 
 	if (!mLayers.Init(256, true)) // this array grows as needed
         return false;
@@ -107,6 +108,11 @@ Sequence::Type Sequence::GetType(void) const
 uint8_t Sequence::GetCaps(void) const
 {
 	return mCaps;
+}
+
+const Sequence::Requirements * Sequence::GetRequirements(void) const
+{
+    return &mRequirements;
 }
 
 void Sequence::GetInfo(Type *resType, bool *resHasSound, int* numSpawnAreas)

@@ -1,7 +1,16 @@
 # skip build files
-/code/*/exe
 /code/*/bin
 /code/projects/windows/.vs
+
+code/appDX11ShaderCompiler/exe
+code/appImmUnity/exe/ImmUnityPlugin.dll
+code/appImmUnity/exe/ImmUnityPlugin.exp
+code/appImmUnity/exe/ImmUnityPlugin.ilk
+code/appImmUnity/exe/ImmUnityPlugin.lib
+code/appImmUnity/exe/ImmUnityPlugin.pdb
+code/appImmUnity/exe/
+code/appImmViewer/exe/appImmViewer_Debug.*
+code/appImmViewer/exe/appImmViewer_Release.*
 
 # skip shader files
 **/tmp/*.inc

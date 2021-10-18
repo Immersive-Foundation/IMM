@@ -99,7 +99,6 @@ namespace ImmCore {
 
             if (data.ID == WAV_FACT)      // 0x74636166 "fact"
             {
-                uint32_t numSamples = fp->ReadUInt32();
             }
             else if (data.ID == WAV_PEAK) // 0x4b414550 = "peak"
             {

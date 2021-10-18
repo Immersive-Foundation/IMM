@@ -47,8 +47,9 @@ namespace ImmImporter
             piTArray<uint8_t> data;
             if (!iReadBlob(fp, &data))
                 return false;
-
-            return me->LoadAssetMemory(data, log, ext);
+            const bool res = me->LoadAssetMemory(data, log, ext);
+            data.End();
+            return res;
         }
 
     }

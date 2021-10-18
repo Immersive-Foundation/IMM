@@ -116,7 +116,7 @@ namespace ImmImporter
         uint64_t mOffset;
         bool     mPaused;
         bool     mPlay;
-        bool     mCompressed;
+        bool     mCompressed; // if compressed, mSound is actually not a piWav, but just a binary blob with an OPUS file in it
         float    mVolume;
 
 		int mGpuId;

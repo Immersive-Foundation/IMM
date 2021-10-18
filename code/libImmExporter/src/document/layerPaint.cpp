@@ -8,15 +8,13 @@ namespace ImmExporter
     {
         mMaxRepeatCount = 1;
         mVersion = version;
-        mDrawingCapacity = 0;
-        mFrameCapacity = 0;
     }
 
     void LayerPaint::Deinit()
     {
-        for (auto drawing = mDrawings.begin(); drawing != mDrawings.end(); drawing++)
+        for ( Drawing & drawing : mDrawings )
         {
-            (*drawing)->Destroy();
+            drawing.Destroy();
         }
         mFrameToDrawingMap.clear();
         mDrawings.clear();
@@ -24,9 +22,10 @@ namespace ImmExporter
 
     Drawing* LayerPaint::CreateDrawing()
     {
-        auto drawing = new Drawing;
+        Drawing drawing;
+        const size_t drawingID = mDrawings.size();
         mDrawings.push_back(drawing);
-        return drawing;
+        return &mDrawings[drawingID];
     }
 
     void LayerPaint::AddFrame(uint32_t drawingID)
@@ -46,18 +45,18 @@ namespace ImmExporter
         mMaxRepeatCount = count;
     }
 
-    Drawing* LayerPaint::GetDrawing(uint32_t drawingID) const
+    const Drawing* LayerPaint::GetDrawing(uint32_t drawingID) const
     {
         if (drawingID >= mDrawings.size())
             return nullptr;
-        return mDrawings[drawingID];
+        return &mDrawings[drawingID];
     }
 
-    Drawing* LayerPaint::GetDrawingInFrame(uint32_t frameID) const
+    const Drawing* LayerPaint::GetDrawingInFrame(uint32_t frameID) const
     {
         if (frameID >= mFrameToDrawingMap.size())
             return nullptr;
-        return mDrawings[mFrameToDrawingMap[frameID]];
+        return &mDrawings[mFrameToDrawingMap[frameID]];
     }
 
     const bound3 LayerPaint::GetBoundingBox(uint32_t frameID) const
@@ -65,16 +64,6 @@ namespace ImmExporter
         if (frameID >= mFrameToDrawingMap.size())
             return bound3(1e20f);
         return GetDrawing(frameID)->GetBoundingBox();
-    }
-
-    void LayerPaint::SetDrawingCapacity(uint32_t num)
-    {
-        mDrawingCapacity = num;
-    }
-
-    void LayerPaint::SetFrameCapacity(uint32_t num)
-    {
-        mFrameCapacity = num;
     }
 
     const uint32_t LayerPaint::GetNumDrawings() const
@@ -87,13 +76,5 @@ namespace ImmExporter
         return static_cast<uint32_t>(mFrameToDrawingMap.size());
     }
 
-    const uint32_t LayerPaint::GetDrawingCapacity() const
-    {
-        return mDrawingCapacity;
     }
 
-    const uint32_t LayerPaint::GetFrameCapacity() const
-    {
-        return mFrameCapacity;
-    }
-}

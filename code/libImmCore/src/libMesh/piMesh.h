@@ -127,6 +127,8 @@ public:
 	void SetTriangle(uint32_t streamID, uint32_t triangleID, uint32_t a, uint32_t b, uint32_t c);
 	void SetQuad(uint32_t streamID, uint32_t triangleID, uint32_t a, uint32_t b, uint32_t c, uint32_t d);
 
+    void GetStats( int *numIndices, int *numVertices, int *vertexFormatSize ) const;
+
 private:
     bool iWrite(piOStream & fp) const;
     bool iRead(piIStream & fp);
