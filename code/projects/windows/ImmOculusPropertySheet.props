@@ -2,8 +2,8 @@
 <Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ImportGroup Label="PropertySheets" />
   <PropertyGroup Label="UserMacros">
-    <IMM_OculusIncDir>../../../libs_3rd_party/oculus/include</IMM_OculusIncDir>
-    <IMM_OculusLibDir>../../../libs_3rd_party/oculus/lib/$(Configuration)</IMM_OculusLibDir>
+    <IMM_OculusIncDir>$(IMMThirdPartyDir)/oculus/include</IMM_OculusIncDir>
+    <IMM_OculusLibDir>$(IMMThirdPartyDir)/oculus/lib/$(Configuration)</IMM_OculusLibDir>
   </PropertyGroup>
   <PropertyGroup>
     <IncludePath>$(IMM_OculusIncDir);$(IncludePath)</IncludePath>

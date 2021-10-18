@@ -2,8 +2,8 @@
 <Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ImportGroup Label="PropertySheets" />
   <PropertyGroup Label="UserMacros">
-    <IMM_OPUSIncDir>../../../libs_3rd_party/opus/include</IMM_OPUSIncDir>
-    <IMM_OPUSLibDir>../../../libs_3rd_party/opus/lib/$(Configuration)</IMM_OPUSLibDir>
+    <IMM_OPUSIncDir>$(IMMThirdPartyDir)/opus/include</IMM_OPUSIncDir>
+    <IMM_OPUSLibDir>$(IMMThirdPartyDir)/opus/lib/$(Configuration)</IMM_OPUSLibDir>
   </PropertyGroup>
   <PropertyGroup>
     <IncludePath>$(IMM_OPUSIncDir);$(IncludePath)</IncludePath>

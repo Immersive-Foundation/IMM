@@ -2,10 +2,10 @@
 <Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ImportGroup Label="PropertySheets" />
   <PropertyGroup Label="UserMacros">
-    <IMM_PNGLibSuffix Condition="'$(OSS_PrimaryConfig)' == 'Debug'">d</IMM_PNGLibSuffix>
-    <IMM_PNGLibSuffix Condition="'$(OSS_PrimaryConfig)' == 'Release'"></IMM_PNGLibSuffix>
-    <IMM_PNGIncDir>../../../libs_3rd_party/png/include</IMM_PNGIncDir>
-    <IMM_PNGLibDir>../../../libs_3rd_party/png/lib/$(Configuration)</IMM_PNGLibDir>
+    <IMM_PNGLibSuffix Condition="'$(Configuration)' == 'Debug'">d</IMM_PNGLibSuffix>
+    <IMM_PNGLibSuffix Condition="'$(Configuration)' == 'Release'"></IMM_PNGLibSuffix>
+    <IMM_PNGIncDir>$(IMMThirdPartyDir)/png/include</IMM_PNGIncDir>
+    <IMM_PNGLibDir>$(IMMThirdPartyDir)/png/lib/$(Configuration)</IMM_PNGLibDir>
   </PropertyGroup>
   <PropertyGroup>
     <IncludePath>$(IMM_PNGIncDir);$(IncludePath)</IncludePath>
