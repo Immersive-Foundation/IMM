@@ -42,7 +42,7 @@ layout (std140, row_major, binding=5) uniform PassState
     int kk3;
 }pass;
 
-#if USE_28_BYTE_VERTS==1
+#if VERTEX_FORMAT==1
 
 struct vertex_format_t
 {
@@ -170,7 +170,7 @@ void main()
 
     vg.mask = (inColAlpha.w>0.999) ? layer.mID : inInfo;
 
-    #if USE_28_BYTE_VERTS==0
+    #if VERTEX_FORMAT==0
     // directional stroke
     vec3 ori = inOri;
     if( ((inInfo>>7)&1u)==0u)

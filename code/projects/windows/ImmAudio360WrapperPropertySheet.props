@@ -2,7 +2,16 @@
 <Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ImportGroup Label="PropertySheets" />
   <PropertyGroup Label="UserMacros">
-    <IMM_Audio360IncDir>../../../libs_3rd_party/libs/audio360/include</IMM_Audio360IncDir>
-    <IMM_Audio360LibDir>../../../libs_3rd_party/libs/audio360/lib/x64/</IMM_Audio360LibDir>
+    <IMM_Audio360IncDir>$(IMMThirdPartyDir)/audio360/include</IMM_Audio360IncDir>
+    <IMM_Audio360LibDir>$(IMMThirdPartyDir)/audio360/lib</IMM_Audio360LibDir>
   </PropertyGroup>
+  <PropertyGroup>
+    <IncludePath>$(IMM_Audio360IncDir);$(IncludePath)</IncludePath>
+    <LibraryPath>$(IMM_Audio360LibDir);$(LibraryPath)</LibraryPath>
+  </PropertyGroup>
+  <ItemDefinitionGroup>
+    <Link>
+      <AdditionalDependencies>Audio360.lib;%(AdditionalDependencies)</AdditionalDependencies>
+    </Link>
+  </ItemDefinitionGroup>
 </Project>

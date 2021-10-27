@@ -1,3 +1,4 @@
+static const char* shader_model_vs = R"(
 #extension GL_EXT_shader_io_blocks : enable
 
 #if STEREOMODE==2
@@ -71,3 +72,4 @@ void main()
 
     gl_Position = display.mViewerToEye_Prj[iid] * vec4(wpos,1.0);
 }
+)";

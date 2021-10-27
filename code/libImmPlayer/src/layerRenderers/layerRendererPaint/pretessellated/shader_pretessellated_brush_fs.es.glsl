@@ -1,3 +1,4 @@
+static const char* shader_pretessellated_brush_fs = R"(
 #extension GL_EXT_shader_io_blocks : enable
 
 precision highp float;
@@ -59,4 +60,4 @@ void main( void )
 
     gl_SampleMask[0] = alpha2coverage( al, ivec2(gl_FragCoord.x / dFdx(gl_FragCoord.x), gl_FragCoord.y / dFdy(gl_FragCoord.y)), uint(frame.mFrame), vf.mask );
 }
-
+)";
