@@ -1,0 +1,5 @@
+include ':immunity'
+//include ':immplayer'
+//include ':immimporter'
+//include ':immcore'
+rootProject.name = "ImmAndroid"

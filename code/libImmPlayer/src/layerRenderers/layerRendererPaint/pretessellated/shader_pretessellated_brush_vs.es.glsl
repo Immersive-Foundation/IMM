@@ -1,3 +1,4 @@
+static const char* shader_pretessellated_brush_vs = R"(
 #extension GL_EXT_shader_io_blocks : enable
 
 #define NUM_VIEWS 2
@@ -101,3 +102,4 @@ void main()
 
     gl_Position = display.mViewerToEye_Prj[iid] * vec4(cpos,1.0);
 }
+)";

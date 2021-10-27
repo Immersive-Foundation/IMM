@@ -1,5 +1,5 @@
 #define CUSTOM_ALPHA_TO_COVERAGE 1
-//#define UNITY
+#define UNITY
 #include <malloc.h>
 #include <thread>
 #include <chrono>
