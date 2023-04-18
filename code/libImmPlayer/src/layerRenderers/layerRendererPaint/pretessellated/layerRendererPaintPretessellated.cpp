@@ -437,12 +437,6 @@ namespace ImmPlayer
 		return true;		
 	}
 
-
-	void LayerRendererPaintPretessellated::GlobalWork(piRenderer* renderer, piSoundEngine* sound, piLog* log, Layer* la, float masterVolume)
-	{
-
-	}
-
 	void LayerRendererPaintPretessellated::PrepareForDisplay(StereoMode stereoMode)
 	{
 		mStereoMode = stereoMode;

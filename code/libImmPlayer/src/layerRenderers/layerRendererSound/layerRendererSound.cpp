@@ -237,7 +237,7 @@ namespace ImmPlayer
 	}
 
    
-	void LayerRendererSound::GlobalWork(piRenderer* renderer, piSoundEngine* soundEngine, piLog* log, Layer* la, float masterVolume)
+	void LayerRendererSound::GlobalWork(piRenderer* renderer, piSoundEngine* soundEngine, piLog* log, Layer* la, float masterVolume, trans3d documentToWorld)
 	{
         LayerSound *ls = (LayerSound *) la->GetImplementation();
         if (!la->GetLoaded()) return;
@@ -316,7 +316,7 @@ namespace ImmPlayer
         }
 
         
-        const trans3d layer2world = la->GetTransformToWorld();
+        const trans3d layer2world = la->GetTransformToWorld() * documentToWorld;
         const LayerSound::Type type = ls->GetType();
 
         if (type == LayerSound::Type::Positional)

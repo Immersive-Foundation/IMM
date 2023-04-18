@@ -180,10 +180,6 @@ namespace ImmPlayer
 		return true;
 	}
 
-	void LayerRendererModel::GlobalWork(piRenderer* renderer, piSoundEngine* sound, piLog* log, Layer* la, float masterVolume)
-	{
-	}
-
 	void LayerRendererModel::PrepareForDisplay(StereoMode stereoMode)
 	{
 		mVisibleLayerInfos.SetLength(0);

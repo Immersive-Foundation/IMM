@@ -40,10 +40,10 @@ namespace ImmPlayer {
         void Deinit(void);
 
         // call this only once per frame
-        void GlobalWork( bool enabled, uint32_t microsecondsBudget);
+        void GlobalWork( bool enabled, uint32_t microsecondsBudget, bool reverse = false);
 
         // call this ones per frame and per camera
-        void GlobalRender(const ImmCore::trans3d & vr_to_head, const ImmCore::trans3d & world_to_head, const ImmCore::mat4x4 & projection, const StereoMode & stereoMode);
+        void GlobalRender(const ImmCore::trans3d & vr_to_head, const ImmCore::trans3d & world_to_head, const ImmCore::mat4x4 & projection, const StereoMode & stereoMode, const int* UnityDocVisible = nullptr);
 
         //=== this are the only functions that can be called form the render thread. Everything else should always be called from the main thread ===
         // call this ones per frame and per camera, if in mono or two pass stereo
@@ -191,7 +191,7 @@ namespace ImmPlayer {
 		void GetChapterInfo(size_t& numChapters, ImmCore::piTArray<ImmCore::piTick>& chapterLengths, bool& hasPlays, int id);
 
     private:
-        void iGlobalWorkLayer(Layer* la, float masterVolum);
+        void iGlobalWorkLayer(Layer* la, float masterVolum, ImmCore::trans3d docToWorld);
         void iDisplayPreRenderLayer(Layer* la, const ImmCore::trans3d & parentLocation, float parentOpacity, const ImmCore::trans3d & worldToViewer);
         void iUnloadNotInTimeline(Layer* root, ImmCore::piTick now);
         ImmCore::mat4x4 iConvertProjectionMatrix(const ImmCore::mat4x4 & mat);

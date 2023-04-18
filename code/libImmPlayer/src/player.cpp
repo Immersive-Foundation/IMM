@@ -34,8 +34,72 @@ namespace ImmPlayer
 
     Player::~Player() {}
 
+    static mat4x4d aUnityToPilibs(const double* m)
+    {
+        return mat4x4d(m[0], m[4], m[8], m[12],
+            m[1], m[5], m[9], m[13],
+            m[2], m[6], m[10], m[14],
+            m[3], m[7], m[11], m[15]);
+    }
+
+    static mat4x4d bUnityToPilibs(const double* m)
+    {
+        return mat4x4d(m[0], m[1], m[2], m[3],
+            m[4], m[5], m[6], m[7],
+            m[8], m[9], m[10], m[11],
+            m[12], m[13], m[14], m[15]);
+    }
+
+    static mat4x4d gl2dx(const mat4x4d& mat)
+    {
+        return mat4x4d(mat[0], mat[1], mat[2], mat[3],
+            mat[4], -mat[5], mat[6], mat[7],
+            mat[8], mat[9], -0.5 * (1.0 + mat[10]), -0.5 * mat[11],
+            mat[12], mat[13], mat[14], mat[15]);
+    }
+
+    static mat4x4d dx2gl(const mat4x4d& mat)
+    {
+        return mat4x4d(mat[0], mat[1], mat[2], mat[3],
+            mat[4], -mat[5], mat[6], mat[7],
+            mat[8], mat[9], -(1.0 + 2.0 * mat[10]), -2.0 * mat[11],
+            mat[12], mat[13], mat[14], mat[15]);
+    }
+
     bool Player::Init(piRenderer* renderer, piSoundEngine* sound, piLog* log, piTimer *timer, const Configuration * configuration)
     {
+        //trans3d unity = trans3d::identity();
+        //trans3d res = trans3d::identity();
+        //unity.mTranslation.x = 1.2;
+        //res = unity * trans3d::flipZ();
+        //const double fromUnity[16] = {
+        //    1.0, 0.0, 0.0, 0.0,
+        //    0.0, 1.0, 0.0, 0.0,
+        //    0.0, 0.0, 1.0, 0.0,
+        //    1.2, 0, 3.2, 1.0};
+        //mat4x4d test = aUnityToPilibs(fromUnity);
+        //mat4x4d con1 = test * mat4x4d::flipZ();
+        //
+        //trans3d tmp = fromMatrix(test);
+        //tmp.mTranslation.z *= -1;
+        //tmp.mRotation.x *= -1;
+        //tmp.mRotation.y *= -1;
+        //mat4x4d con2 = toMatrix(tmp);
+
+        //mat4x4d con3 = dx2gl(test);
+        //trans3d con3t = fromMatrix(con3);
+
+        //mat4x4d con4= gl2dx(test);
+        //trans3d con4t = fromMatrix(con4);
+
+
+
+        ////trans3d = local * trans3d::flipZ();
+        //mat4x4d unityMat = toMatrix(unity);
+        //mat4x4d resMat = toMatrix(res);
+
+        //return false;
+
         log->Printf(LT_MESSAGE, L"Player Init...");
 
 #if !defined(ANDROID)
@@ -437,7 +501,7 @@ namespace ImmPlayer
     static const Document::Command cmdHide = { Document::Command::Type::Hide };
     static const Document::Command cmdShow = { Document::Command::Type::Show };
 
-    void Player::GlobalWork( bool enabled, uint32_t microsecondsBudget)
+    void Player::GlobalWork( bool enabled, uint32_t microsecondsBudget, bool reverse)
     {
         const uint64_t num = mDocuments.GetMaxLength();
 
@@ -531,7 +595,7 @@ namespace ImmPlayer
                     bool docReady = doc->UpdateStateCPU(&mLayerRenderSound, mLayerPaintRender, &mLayerRenderPicture, &mLayerRenderModel, mColorSpace, mPaintRenderingTechnique, mSoundEngine, mLog, mTime, cmd);
                     if (docReady)
                     {
-                        iGlobalWorkLayer(doc->GetSequence()->GetRoot(), doc->GetVolume());
+                        iGlobalWorkLayer(doc->GetSequence()->GetRoot(), doc->GetVolume(), doc->GetDocumentToWorld());
                     }
                     anyDocReady |= docReady;
 
@@ -549,6 +613,14 @@ namespace ImmPlayer
             {
                 trans3d tmp = mViewerInfo.mHeadToWorld;
                 tmp.mScale = 1.0;
+                // Hack to fix sound in unity plugin. Unity is y-up, left-handed
+                if (reverse)
+                {
+                    tmp.mTranslation.z *= -1;
+                    //tmp.mRotation.x *= -1;
+                    //tmp.mRotation.y *= -1;
+                    //tmp = tmp * trans3d::flipZ();
+                }
                 mSoundEngine->SetListener(tmp);
 
             }
@@ -556,7 +628,7 @@ namespace ImmPlayer
     }
 
     // this is called once per camera
-    void Player::GlobalRender(const trans3d & vr_to_head, const trans3d & world_to_head, const mat4x4 & projection, const StereoMode & stereoMode)
+    void Player::GlobalRender(const trans3d & vr_to_head, const trans3d & world_to_head, const mat4x4 & projection, const StereoMode & stereoMode, const int* UnityDocVisible)
     {
         if (!mEnabled) return;
 
@@ -609,7 +681,14 @@ namespace ImmPlayer
                 Document *doc = (Document *)mDocuments.GetAddress(i);
 
                 // update loading process ideally this happens only for the first camera. We need to have a frameID counter for that to detect changes in frameID
-                const bool needRender = doc->UpdateStateGPU(mLayerPaintRender, &mLayerRenderPicture, &mLayerRenderModel, mRenderer, mLog, mColorSpace);
+                bool needRender = doc->UpdateStateGPU(mLayerPaintRender, &mLayerRenderPicture, &mLayerRenderModel, mRenderer, mLog, mColorSpace);
+                
+#ifdef UNITY
+                // Check document visibility to current unity camera, UnityDocVisible size is 32 temporarily.
+                if (UnityDocVisible != nullptr && UnityDocVisible[i] == 0)
+                    needRender = false;
+#endif
+
                 anyDocReady |= needRender;
 
                 if (needRender)
@@ -632,7 +711,7 @@ namespace ImmPlayer
         //log->Printf(LT_MESSAGE, L"Global Done!");
     }
 
-    void Player::iGlobalWorkLayer(Layer* la, float masterVolume)
+    void Player::iGlobalWorkLayer(Layer* la, float masterVolume, trans3d docToWorld)
     {
         const Layer::Type lt = la->GetType();
 
@@ -642,7 +721,7 @@ namespace ImmPlayer
             for (int i = 0; i < num; i++)
             {
                 Layer* lc = la->GetChild(i);
-                iGlobalWorkLayer(lc, masterVolume);
+                iGlobalWorkLayer(lc, masterVolume, docToWorld);
             }
             return;
         }
@@ -652,30 +731,11 @@ namespace ImmPlayer
         // early exit after parsing groups
         if (lt != Layer::Type::Sound && !la->GetVisible()) return;
 
-        LayerRenderer *lr = nullptr;
-        if (lt == Layer::Type::Paint)   lr = mLayerPaintRender;
-        else if (lt == Layer::Type::Picture) lr = &mLayerRenderPicture;
-        else if (lt == Layer::Type::Sound)   lr = &mLayerRenderSound;
-        else if (lt == Layer::Type::Model)   lr = &mLayerRenderModel;
-
-        if (lr != nullptr) lr->GlobalWork(mRenderer, mSoundEngine, mLog, la, masterVolume);
+        if (lt == Layer::Type::Model)  
+            mLayerRenderSound.GlobalWork(mRenderer, mSoundEngine, mLog, la, masterVolume, docToWorld);
     }
 
-    static mat4x4d gl2dx(const mat4x4d & mat)
-    {
-        return mat4x4d(mat[0], mat[1], mat[2], mat[3],
-            mat[4], -mat[5], mat[6], mat[7],
-            mat[8], mat[9], -0.5*(1.0 + mat[10]), -0.5*mat[11],
-            mat[12], mat[13], mat[14], mat[15]);
-    }
 
-    static mat4x4d dx2gl(const mat4x4d & mat)
-    {
-        return mat4x4d(mat[0], mat[1], mat[2], mat[3],
-            mat[4], -mat[5], mat[6], mat[7],
-            mat[8], mat[9], -(1.0 + 2.0*mat[10]), -2.0*mat[11],
-            mat[12], mat[13], mat[14], mat[15]);
-    }
 
     void Player::iDisplayPreRenderLayer(Layer* la, const trans3d & parentToWorld, float parentOpacity, const trans3d & worldToViewer)
     {
@@ -683,16 +743,16 @@ namespace ImmPlayer
             return;
 
 
-        if (!la->GetPotentiallyVisible())
-        {
-            return;
-        }
+        //if (!la->GetPotentiallyVisible())
+        //{
+        //    return;
+        //}
 
         const trans3d layerToWorld = parentToWorld * la->GetTransform();
 
         const float laOpacity = parentOpacity * la->GetOpacity();
 
-        if (laOpacity == 0.0f)
+        if (laOpacity < 0.01f)
         {
             return;
         }
@@ -731,6 +791,13 @@ namespace ImmPlayer
 
         if (lt == Layer::Type::Group)
         {
+            // NEED CHECK
+            //const bound3d bbox = la->GetBBox();
+            //if (boxInFrustum(dfrus, bbox) == 0) // group culling
+            //{
+            //    return;
+            //}
+
             const int num = la->GetNumChildren();
             for (int i = 0; i < num; i++)
             {
@@ -892,7 +959,7 @@ namespace ImmPlayer
             mRenderer->SetState(piSTATE_DEPTH_TEST, true);
             mRenderer->SetState(piSTATE_DEPTH_CLAMP, true);
             mRenderer->SetState(piSTATE_FRONT_FACE, true);
-            mRenderer->SetState(piSTATE_CULL_FACE, true);
+            //mRenderer->SetState(piSTATE_CULL_FACE, true);
 #if CUSTOM_ALPHA_TO_COVERAGE!=1
             mRenderer->SetState(piSTATE_ALPHA_TO_COVERAGE, mRenderer->GetAPI() == piRenderer::API::GLES);
 #endif
@@ -916,7 +983,9 @@ namespace ImmPlayer
             mRenderer->SetState(piSTATE_DEPTH_TEST, true);
         }
 
+#ifdef PERFINFO
         PopulateDisplayRenderPerfInfo();
+#endif // PERFINFO
 
         #if defined(RENDER_BUDGET) || defined(MEASURE_GPU_TIME)
         if (mEnablePerformanceMeasurement)
@@ -968,7 +1037,7 @@ namespace ImmPlayer
             mRenderer->SetState(piSTATE_DEPTH_TEST, true);
             mRenderer->SetState(piSTATE_DEPTH_CLAMP, true);
             mRenderer->SetState(piSTATE_FRONT_FACE, true);
-            mRenderer->SetState(piSTATE_CULL_FACE, true);
+            //mRenderer->SetState(piSTATE_CULL_FACE, true);
 #if CUSTOM_ALPHA_TO_COVERAGE!=1
             mRenderer->SetState(piSTATE_ALPHA_TO_COVERAGE, mRenderer->GetAPI() == piRenderer::API::GLES);
 #endif
@@ -1001,7 +1070,10 @@ namespace ImmPlayer
         }
         #endif
 
+#ifdef PERFINFO
         PopulateDisplayRenderPerfInfo();
+
+#endif // PERFINFO
     }
 
     void Player::RenderStereoSinglePass(const ivec2 & pixelResolutionIncludingSupersampling, const mat4x4d & head_to_lEye, const mat4x4 & lProjection, const mat4x4d & head_to_rEye, const mat4x4 & rProjection)
@@ -1039,7 +1111,7 @@ namespace ImmPlayer
             mRenderer->SetState(piSTATE_DEPTH_TEST, true);
             mRenderer->SetState(piSTATE_DEPTH_CLAMP, true);
             mRenderer->SetState(piSTATE_FRONT_FACE, true);
-            mRenderer->SetState(piSTATE_CULL_FACE, true);
+            //mRenderer->SetState(piSTATE_CULL_FACE, true);
 #if CUSTOM_ALPHA_TO_COVERAGE!=1
             mRenderer->SetState(piSTATE_ALPHA_TO_COVERAGE, mRenderer->GetAPI() == piRenderer::API::GLES);
 #endif
@@ -1071,7 +1143,10 @@ namespace ImmPlayer
         }
         #endif
 
+#ifdef PERFINFO
         PopulateDisplayRenderPerfInfo();
+
+#endif // PERFINFO
     }
 
     int Player::Load(const wchar_t* name)

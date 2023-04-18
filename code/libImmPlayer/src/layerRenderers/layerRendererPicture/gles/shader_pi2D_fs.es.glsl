@@ -93,11 +93,14 @@ void main( void )
 	//           So, the code below renders the images slightly wrong so that the brush
 	//           strokes that were created in Quill with the wrong color picker match the
 	//           picture from which they were picked.
-	col = linear2srgb(col*col);
+	//col = linear2srgb(col*col);
 
 
+	#if COLOR_SPACE==0
+	outColor = vec4( pow(col,vec3(2.2)), 1.0 );
+	#else
     outColor = vec4( col, 1.0 );
-
+    #endif
     gl_SampleMask[0] = alpha2coverage( al, ivec2(gl_FragCoord.x / dFdx(gl_FragCoord.x), gl_FragCoord.y / dFdy(gl_FragCoord.y)), uint(frame.mFrame), 0u );
 }
 )";

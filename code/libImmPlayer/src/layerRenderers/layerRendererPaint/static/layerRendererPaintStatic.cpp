@@ -56,6 +56,8 @@ namespace ImmPlayer
         LayersState       mLayerState; // per camera pass
         bool              mDrawin;     // per camera pass
         bool              mWiggle;     // per camera pass
+        bool              mFlipped;
+
         #ifdef RENDER_BUDGET
         float        mDistance;
         #endif
@@ -434,12 +436,6 @@ namespace ImmPlayer
         */
     }
 
-
-    void LayerRendererPaintStatic::GlobalWork(piRenderer* renderer, piSoundEngine* sound, piLog* log, Layer* la, float masterVolume)
-    {
-
-    }
-
     void LayerRendererPaintStatic::PrepareForDisplay(StereoMode stereoMode)
     {
         mStereoMode = stereoMode;
@@ -472,7 +468,7 @@ namespace ImmPlayer
         // layer frustum culling
         if (boxInFrustum(frus, bbox) == 0)
         {
-            
+#ifdef PERFINFO
             iSLayerDrawInfoStatic* me = (iSLayerDrawInfoStatic*)mLayerInfo.GetAddress(id);
 
             for (uint32_t chunkType = 0; chunkType < kNumChunkTypes; chunkType++)
@@ -488,6 +484,7 @@ namespace ImmPlayer
                     mDrawCallInfo.numTrianglesCulled += srcChunk->mNumIndices;
                 }
             }
+#endif // PERFINFO
 
             //static int kk = 0; log->Printf(LT_MESSAGE, L"culled %s (%d)", la->GetName().GetS(), kk++);
             return;
@@ -495,20 +492,20 @@ namespace ImmPlayer
 
 
         // layer size culling (if too small in screen space)
-        const vec3  lcen = getcenter(bbox);
-        const vec3  lViewerPosition = d2f((invert(layerToViewer)*vec4d(0.0, 0.0, 0.0, 1.0)).xyz());
-        const float wDistanceToBBox = float(double(sdBox(lViewerPosition - lcen, getradiius(bbox))) * layerToViewer.mScale); // distance to closest point on the surface of the bbox. It's negative if we are inside.
-        if (wDistanceToBBox > 0.0) // if outside bbox
-        {
-            const vec3d vcen = (layerToViewer*f2d(vec4(lcen, 1.0f))).xyz();
-            const float lrad2 = diagonalSquared(bbox);
-            const double dis2 = lengthSquared(vcen);
-            const double sizeInScreen = layerToViewer.mScale * sqrt(double(lrad2) / dis2);
-            if (sizeInScreen < 0.005) // IQ-TODO: do a smooth fade here, super easy by using the layer opacity
-            {
-                return;
-            }
-        }
+        //const vec3  lcen = getcenter(bbox);
+        //const vec3  lViewerPosition = d2f((invert(layerToViewer)*vec4d(0.0, 0.0, 0.0, 1.0)).xyz());
+        //const float wDistanceToBBox = float(double(sdBox(lViewerPosition - lcen, getradiius(bbox))) * layerToViewer.mScale); // distance to closest point on the surface of the bbox. It's negative if we are inside.
+        //if (wDistanceToBBox > 0.0) // if outside bbox
+        //{
+        //    const vec3d vcen = (layerToViewer*f2d(vec4(lcen, 1.0f))).xyz();
+        //    const float lrad2 = diagonalSquared(bbox);
+        //    const double dis2 = lengthSquared(vcen);
+        //    const double sizeInScreen = layerToViewer.mScale * sqrt(double(lrad2) / dis2);
+        //    if (sizeInScreen < 0.005) // IQ-TODO: do a smooth fade here, super easy by using the layer opacity
+        //    {
+        //        return;
+        //    }
+        //}
         //---------
         
         iSLayerDrawInfoStatic* me = (iSLayerDrawInfoStatic*)mLayerInfo.GetAddress(id);
@@ -525,10 +522,20 @@ namespace ImmPlayer
             {
                 const DrawingStatic::Geometry::Chunk *srcChunk = me->mGeometry->mBuffers[chunkType].mChunks.GetAddress(i);
                 const bool visible = boxInFrustum(frus, srcChunk->mBBox) != 0;
+
+                //bool visible = true;
+
+                //if (chunkType == static_cast<uint32_t>(Element::BrushSectionType::Segment))
+                //    visible = true;
+                //else
+                //    visible = boxInFrustum(frus, srcChunk->mBBox) != 0;
+
                 if (!visible)
                 {
+#ifdef PERFINFO
                     ++mDrawCallInfo.numDrawCallsCulled;
                     mDrawCallInfo.numTrianglesCulled += srcChunk->mNumIndices;
+#endif // PERFINFO
                     continue;
                 }
 
@@ -577,6 +584,8 @@ namespace ImmPlayer
 
             me->mDrawin = la->GetLayerUsesDrawin();
             me->mWiggle = ka->GetType() == KeepAlive::KeepAliveType::Wiggle;
+            me->mFlipped = la->GetTransform().mFlip != flip3::N;
+
             #ifdef RENDER_BUDGET
             //me->mDistance = (wDistanceToBBox<0.0) ? wDistanceToBBox : 1.0f/sizeInScreen;
             //me->mDistance = wDistanceToBBox;
@@ -622,9 +631,10 @@ namespace ImmPlayer
         #else
         const uint64_t numToRender = num;
         #endif
-
+#ifdef PERFINFO
         mDrawCallInfo.numDrawCalls = 0;
         mDrawCallInfo.numTriangles = 0;
+#endif // PERFINFO
 
         // for each visible layer
         for (uint64_t j = 0; j < numToRender; j++)
@@ -661,8 +671,28 @@ namespace ImmPlayer
                 if (numChunks == 0) continue;
 
                 // set shader and state
-                const int stateID = ((chunkType == static_cast<int>(Element::BrushSectionType::Segment)) ? 0 : 1);                                    
+                //const int stateID = ((chunkType == static_cast<int>(Element::BrushSectionType::Segment)) ? 0 : 1);                                    
+                //if (stateID != lastStateID) { lastStateID = stateID; renderer->SetRasterState(mRasterState[stateID]); }
+
+#ifdef UNITY
+                if (chunkType == static_cast<int>(Element::BrushSectionType::Segment))
+                {
+                    renderer->SetState(piSTATE_CULL_FACE, false);
+            }
+                else
+                {
+                    renderer->SetState(piSTATE_CULL_FACE, true);
+                }
+                //renderer->SetState(piSTATE_DEPTH_TEST, true);
+                //renderer->SetState(piSTATE_STENCIL_TEST, false);
+                //renderer->SetState(piSTATE_DEPTH_CLAMP, true);
+
+#else
+                // set shader and state
+                const int stateID = ((chunkType == static_cast<int>(Element::BrushSectionType::Segment)) ? 0 : 1);
                 if (stateID != lastStateID) { lastStateID = stateID; renderer->SetRasterState(mRasterState[stateID]); }
+#endif // UNITY
+
 
 #if !defined(ANDROID)
                 int shaderID = tmpShaderId + 2 * 2 * 3 * chunkType;

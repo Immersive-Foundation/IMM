@@ -96,7 +96,11 @@ void main( void )
     if( bitCount(gl_SampleMaskIn[0]) < 4) { col = vec3(0.0); }
         #endif
 
+	#if COLOR_SPACE==0
+	out_color = vec4( pow(col,vec3(2.2)), 1.0 );
+	#else
     out_color = vec4( col, 1.0 );
+    #endif
 
     gl_SampleMask[0] = alpha2coverage( al, ivec2(gl_FragCoord.x / dFdx(gl_FragCoord.x), gl_FragCoord.y / dFdy(gl_FragCoord.y)), uint(frame.mFrame), 0u );
 }
