@@ -2,7 +2,16 @@
 <Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ImportGroup Label="PropertySheets" />
   <PropertyGroup Label="UserMacros">
-    <IMM_ZLibIncDir>../../../libs_3rd_party/libs/zlib/include</IMM_ZLibIncDir>
-    <IMM_ZLibLibDir>../../../libs_3rd_party/libs/zlib/lib/x64/$(Configuration)/</IMM_ZLibLibDir>
+    <IMM_ZLibIncDir>$(IMMThirdPartyDir)/zlib/include</IMM_ZLibIncDir>
+    <IMM_ZLibLibDir>$(IMMThirdPartyDir)/zlib/lib/$(Configuration)</IMM_ZLibLibDir>
   </PropertyGroup>
+  <PropertyGroup>
+    <IncludePath>$(IMM_ZLibIncDir);$(IncludePath)</IncludePath>
+    <LibraryPath>$(IMM_ZLibLibDir);$(LibraryPath)</LibraryPath>
+  </PropertyGroup>
+  <ItemDefinitionGroup>
+    <Link>
+      <AdditionalDependencies>zlibstatic.lib;%(AdditionalDependencies)</AdditionalDependencies>
+    </Link>
+  </ItemDefinitionGroup>
 </Project>

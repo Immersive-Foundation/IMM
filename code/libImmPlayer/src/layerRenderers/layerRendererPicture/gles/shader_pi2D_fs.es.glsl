@@ -1,4 +1,5 @@
-static const char* shader_pip360Equirect_fs = R"(
+static const char* shader_pi2D_fs = R"(
+
 #extension GL_EXT_shader_io_blocks : enable
 
 precision highp float;
@@ -9,13 +10,6 @@ layout (std140, row_major, binding=0) uniform FrameState
     float       mTime;
     int         mFrame;
 }frame;
-
-layout (std140, row_major, binding=1) uniform LightState
-{
-    mat4x4      mMatrix_Shadow;
-    mat4x4      mInvMatrix_Shadow;
-    vec3        mLight;
-}light;
 
 layout (std140, row_major, binding=3) uniform LayersState
 {
@@ -31,17 +25,16 @@ layout (std140, row_major, binding=3) uniform LayersState
 
 layout(binding=7) uniform sampler2DArray mTexBlueNoise;
 
-layout(binding = 0) uniform sampler2D u_tex0;
+layout (binding=0) uniform sampler2D unTex0;
 
-in Vertex_to_fragment_data
+in V2FData
 {
-    vec3 direction;
-    #if FORMAT_IS_STEREO==1
-    vec4 scale_offset;
-    #endif
-} in_data;
+    vec3 WPos;
+    vec3 OPos;
+    vec2 UV;
+}vf;
 
-out vec4 out_color;
+out vec4 outColor;
 
 int ComputeAlpha2CoverageNoDither(float InAlpha)
 {
@@ -69,21 +62,19 @@ int alpha2coverage(float al, ivec2 p, uint frameID, uint primitiveID)
     return int(mask);
 }
 
-const float k_pi = 3.1415927;
+// hack. please see below!
+vec3 linear2srgb(vec3 val)
+{
+	if (val.x < 0.0031308) val.x *= 12.92; else val.x = 1.055*pow(val.x, 1.0 / 2.4) - 0.055;
+	if (val.y < 0.0031308) val.y *= 12.92; else val.y = 1.055*pow(val.y, 1.0 / 2.4) - 0.055;
+	if (val.z < 0.0031308) val.z *= 12.92; else val.z = 1.055*pow(val.z, 1.0 / 2.4) - 0.055;
+	return val;
+}
 
 void main( void )
 {
-    vec3 nor = normalize( in_data.direction );
-
-    vec2 uv  = vec2(0.5 + 0.5*atan(nor.x,-nor.z)/k_pi, acos(nor.y)/k_pi );
-    vec2 uv2 = vec2(0.5 + 0.5*atan(nor.x,abs(nor.z))/k_pi, uv.y); // compute UVs again without seams for correct gradient computation
-
-    #if FORMAT_IS_STEREO==1
-    uv = clamp( uv * in_data.scale_offset.xy, vec2(0.0,0.0), vec2(1.0,0.5) ) + in_data.scale_offset.zw;
-    #endif
-
     #if DEBUG_RENDER_MODE < 2
-    vec4 te = textureGrad(u_tex0, uv, dFdx(uv2), dFdy(uv2));
+    vec4 te = texture( unTex0, vf.UV );
     vec3 col = te.xyz;
     float al = te.w * layer.mOpacity;
     #else
@@ -96,8 +87,20 @@ void main( void )
     if( bitCount(gl_SampleMaskIn[0]) < 4) { col = vec3(0.0); }
         #endif
 
-    out_color = vec4( col, 1.0 );
+	// HACK ---> This is wrong, in that the texture is already in SRGB space, but we
+	//           still need to do this if we want until Quill fixes its color picker
+	//           which incorrectly converts from SRGB to linear by squaring the color.
+	//           So, the code below renders the images slightly wrong so that the brush
+	//           strokes that were created in Quill with the wrong color picker match the
+	//           picture from which they were picked.
+	//col = linear2srgb(col*col);
 
+
+	#if COLOR_SPACE==0
+	outColor = vec4( pow(col,vec3(2.2)), 1.0 );
+	#else
+    outColor = vec4( col, 1.0 );
+    #endif
     gl_SampleMask[0] = alpha2coverage( al, ivec2(gl_FragCoord.x / dFdx(gl_FragCoord.x), gl_FragCoord.y / dFdy(gl_FragCoord.y)), uint(frame.mFrame), 0u );
 }
 )";

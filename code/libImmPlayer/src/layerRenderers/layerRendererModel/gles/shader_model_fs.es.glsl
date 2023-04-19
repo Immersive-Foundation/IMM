@@ -1,3 +1,4 @@
+static const char* shader_model_fs = R"(
 #extension GL_EXT_shader_io_blocks : enable
 
 precision highp float;
@@ -42,3 +43,4 @@ void main( void )
     float al = layer.mOpacity;
     outColor = vec4(col,al); // DO ALPHA TO COVERAGE HERE!
 }
+)";

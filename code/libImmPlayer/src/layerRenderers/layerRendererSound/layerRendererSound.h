@@ -30,7 +30,7 @@ namespace ImmPlayer
 		bool LoadInSPU(ImmCore::piSoundEngine* sound, ImmCore::piLog* log, ImmImporter::Layer* la) ;
 		bool UnloadInSPU(ImmCore::piSoundEngine* sound, ImmImporter::Layer *la) ;
 
-		void GlobalWork(ImmCore::piRenderer* renderer, ImmCore::piSoundEngine* sound, ImmCore::piLog* log, ImmImporter::Layer* la, float masterVolume) override;
+		void GlobalWork(ImmCore::piRenderer* renderer, ImmCore::piSoundEngine* sound, ImmCore::piLog* log, ImmImporter::Layer* la, float masterVolume, ImmCore::trans3d documentToWorld);
 		void PrepareForDisplay(StereoMode stereoMode) override;
 		void DisplayPreRender(ImmCore::piRenderer* renderer, ImmCore::piSoundEngine* sound, ImmCore::piLog* log, ImmImporter::Layer* la, const ImmCore::frustum3& frus, const ImmCore::trans3d & layerToViewer, float opacity) override;
 		void DisplayRender(ImmCore::piRenderer* renderer, ImmCore::piLog* log, ImmCore::piBuffer layerStateShaderConstans, int capDelta) override;

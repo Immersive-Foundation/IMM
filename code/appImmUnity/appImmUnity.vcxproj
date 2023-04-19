@@ -84,7 +84,7 @@
       <AdditionalIncludeDirectories>$(SolutionDir)..\..\</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
-      <AdditionalDependencies>$(IMM_ZLibLibDir)/libz-static.lib;$(IMM_JPGLibDir)/jpeg.lib;$(IMM_PNGLibDir)/libpng16.lib;$(IMM_Audio360LibDir)/Audio360.lib;$(IMM_OPUSENCLibDir)/opusenc.lib;$(IMM_OPUSLibDir)/opus.lib;$(IMM_OGGLibDir)/libogg.lib;$(IMM_VorbisLibDir)/libvorbis_static.lib;d3d11.lib;ws2_32.lib;winmm.lib;opengl32.lib;../libImmPlayer/bin/x64/$(Configuration)/libImmPlayer.lib;../libImmImporter/bin/x64/$(Configuration)/libImmImporter.lib;../libImmCore/bin/x64/$(Configuration)/libImmCore.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>d3d11.lib;ws2_32.lib;winmm.lib;opengl32.lib;../libImmPlayer/bin/x64/$(Configuration)/libImmPlayer.lib;../libImmImporter/bin/x64/$(Configuration)/libImmImporter.lib;../libImmCore/bin/x64/$(Configuration)/libImmCore.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <SubSystem>Windows</SubSystem>
       <AdditionalLibraryDirectories>
@@ -111,7 +111,7 @@
       <DebugInformationFormat>None</DebugInformationFormat>
     </ClCompile>
     <Link>
-      <AdditionalDependencies>$(IMM_ZLibLibDir)/libz-static.lib;$(IMM_JPGLibDir)/jpeg.lib;$(IMM_PNGLibDir)/libpng16.lib;$(IMM_Audio360LibDir)/Audio360.lib;$(IMM_OPUSENCLibDir)/opusenc.lib;$(IMM_OPUSLibDir)/opus.lib;$(IMM_OGGLibDir)/libogg.lib;$(IMM_VorbisLibDir)/libvorbis_static.lib;d3d11.lib;ws2_32.lib;winmm.lib;opengl32.lib;../libImmPlayer/bin/x64/$(Configuration)/libImmPlayer.lib;../libImmImporter/bin/x64/$(Configuration)/libImmImporter.lib;../libImmCore/bin/x64/$(Configuration)/libImmCore.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>d3d11.lib;ws2_32.lib;winmm.lib;opengl32.lib;../libImmPlayer/bin/x64/$(Configuration)/libImmPlayer.lib;../libImmImporter/bin/x64/$(Configuration)/libImmImporter.lib;../libImmCore/bin/x64/$(Configuration)/libImmCore.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <SubSystem>Windows</SubSystem>
       <OptimizeReferences>true</OptimizeReferences>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>

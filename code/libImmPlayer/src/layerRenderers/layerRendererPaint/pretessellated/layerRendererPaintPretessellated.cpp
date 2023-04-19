@@ -33,7 +33,9 @@ using namespace ImmImporter;
 namespace ImmPlayer
 {
 #if defined(ANDROID)
-	#include "tmp/shader_pretessellated_brush_GLES_glsl.h"
+	//#include "tmp/shader_pretessellated_brush_GLES_glsl.h"
+	#include "shader_pretessellated_brush_vs.es.glsl"
+	#include "shader_pretessellated_brush_fs.es.glsl"
 #else
 	#include "tmp/shader_pretessellated_brush_vs_hlsl.inc"
 	#include "tmp/shader_pretessellated_brush_fs_hlsl.inc"
@@ -433,12 +435,6 @@ namespace ImmPlayer
 	bool LayerRendererPaintPretessellated::LoadInGPU(piRenderer* renderer, piSoundEngine* sound, piLog* log, Layer* la)
 	{
 		return true;		
-	}
-
-
-	void LayerRendererPaintPretessellated::GlobalWork(piRenderer* renderer, piSoundEngine* sound, piLog* log, Layer* la, float masterVolume)
-	{
-
 	}
 
 	void LayerRendererPaintPretessellated::PrepareForDisplay(StereoMode stereoMode)

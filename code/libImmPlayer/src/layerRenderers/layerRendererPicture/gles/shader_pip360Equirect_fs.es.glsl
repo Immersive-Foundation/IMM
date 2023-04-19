@@ -1,5 +1,4 @@
-static const char* shader_pip360Cubemap_fs = R"(
-
+static const char* shader_pip360Equirect_fs = R"(
 #extension GL_EXT_shader_io_blocks : enable
 
 precision highp float;
@@ -30,14 +29,16 @@ layout (std140, row_major, binding=3) uniform LayersState
     uint        mID;
 }layer;
 
-
 layout(binding=7) uniform sampler2DArray mTexBlueNoise;
 
-layout(binding = 0) uniform samplerCube u_tex0;
+layout(binding = 0) uniform sampler2D u_tex0;
 
 in Vertex_to_fragment_data
 {
     vec3 direction;
+    #if FORMAT_IS_STEREO==1
+    vec4 scale_offset;
+    #endif
 } in_data;
 
 out vec4 out_color;
@@ -72,12 +73,18 @@ const float k_pi = 3.1415927;
 
 void main( void )
 {
-    vec3 nor =  in_data.direction ;
+    vec3 nor = normalize( in_data.direction );
+
+    vec2 uv  = vec2(0.5 + 0.5*atan(nor.x,-nor.z)/k_pi, acos(nor.y)/k_pi );
+    vec2 uv2 = vec2(0.5 + 0.5*atan(nor.x,abs(nor.z))/k_pi, uv.y); // compute UVs again without seams for correct gradient computation
+
+    #if FORMAT_IS_STEREO==1
+    uv = clamp( uv * in_data.scale_offset.xy, vec2(0.0,0.0), vec2(1.0,0.5) ) + in_data.scale_offset.zw;
+    #endif
 
     #if DEBUG_RENDER_MODE < 2
-    vec4 te = texture(u_tex0, in_data.direction);
+    vec4 te = textureGrad(u_tex0, uv, dFdx(uv2), dFdy(uv2));
     vec3 col = te.xyz;
-
     float al = te.w * layer.mOpacity;
     #else
     // Gives roughly 12 levels of overdraw.
@@ -89,7 +96,11 @@ void main( void )
     if( bitCount(gl_SampleMaskIn[0]) < 4) { col = vec3(0.0); }
         #endif
 
+	#if COLOR_SPACE==0
+	out_color = vec4( pow(col,vec3(2.2)), 1.0 );
+	#else
     out_color = vec4( col, 1.0 );
+    #endif
 
     gl_SampleMask[0] = alpha2coverage( al, ivec2(gl_FragCoord.x / dFdx(gl_FragCoord.x), gl_FragCoord.y / dFdy(gl_FragCoord.y)), uint(frame.mFrame), 0u );
 }

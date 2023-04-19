@@ -2,7 +2,16 @@
 <Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ImportGroup Label="PropertySheets" />
   <PropertyGroup Label="UserMacros">
-    <IMM_JPGIncDir>../../../libs_3rd_party/libs/jpg/include</IMM_JPGIncDir>
-    <IMM_JPGLibDir>../../../libs_3rd_party/libs/jpg/lib/x64/$(Configuration)/</IMM_JPGLibDir>
+    <IMM_JPGIncDir>$(IMMThirdPartyDir)/jpg/include</IMM_JPGIncDir>
+    <IMM_JPGLibDir>$(IMMThirdPartyDir)/jpg/lib/$(Configuration)</IMM_JPGLibDir>
   </PropertyGroup>
+  <PropertyGroup>
+    <IncludePath>$(IMM_JPGIncDir);$(IncludePath)</IncludePath>
+    <LibraryPath>$(IMM_JPGLibDir);$(LibraryPath)</LibraryPath>
+  </PropertyGroup>
+  <ItemDefinitionGroup>
+    <Link>
+      <AdditionalDependencies>jpeg.lib;%(AdditionalDependencies)</AdditionalDependencies>
+    </Link>
+  </ItemDefinitionGroup>
 </Project>

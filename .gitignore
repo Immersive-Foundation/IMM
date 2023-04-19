@@ -1,19 +1,13 @@
-code/libImmCore/bin
-code/libImmImporter/bin
-code/libImmExporter/bin
-code/libImmPlayer/bin
-code/libImmPlayer/src/layerRenderers/layerRendererPicture/tmp
-code/libImmPlayer/src/layerRenderers/layerRendererModel/tmp
-code/appDX11ShaderCompiler/bin
+# skip build files
+/code/*/bin
+/code/projects/windows/.vs
+
 code/appDX11ShaderCompiler/exe
-code/appImmUnity/bin
-code/appImmUnity/exe/ImmUnityPlugin.dll
-code/appImmUnity/exe/ImmUnityPlugin.exp
-code/appImmUnity/exe/ImmUnityPlugin.ilk
-code/appImmUnity/exe/ImmUnityPlugin.lib
-code/appImmUnity/exe/ImmUnityPlugin.pdb
 code/appImmUnity/exe/
-code/appImmViewer/bin
 code/appImmViewer/exe/appImmViewer_Debug.*
 code/appImmViewer/exe/appImmViewer_Release.*
-code/projects/windows/.vs
+code/appImmViewer/exe/*.dll
+code/appImmViewer/exe/debug.txt
+
+# skip shader files
+**/tmp/*.inc

@@ -41,7 +41,8 @@ namespace ImmPlayer
 #include "shader_model_vs.glsl"
 #include "shader_model_fs.glsl"
 #elif defined(ANDROID)
-#include "tmp/shader_model_GLES_glsl.h"
+#include "gles/shader_model_fs.es.glsl"
+#include "gles/shader_model_vs.es.glsl"
 #endif
 
 	bool LayerRendererModel::Init(piRenderer* renderer, piLog* log, Drawing::ColorSpace colorSpace, bool frontIsCCW)
@@ -177,10 +178,6 @@ namespace ImmPlayer
 		me->mUploaded = true;
 
 		return true;
-	}
-
-	void LayerRendererModel::GlobalWork(piRenderer* renderer, piSoundEngine* sound, piLog* log, Layer* la, float masterVolume)
-	{
 	}
 
 	void LayerRendererModel::PrepareForDisplay(StereoMode stereoMode)

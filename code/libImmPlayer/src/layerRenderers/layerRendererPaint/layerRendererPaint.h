@@ -30,9 +30,6 @@ namespace ImmPlayer
 
         virtual bool UnloadInGPU(ImmCore::piRenderer *renderer, ImmCore::piSoundEngine *sound, ImmCore::piLog *log, ImmImporter::Layer *la, unsigned int drawingID) = 0;
 
-		virtual void GlobalWork(ImmCore::piRenderer *renderer, ImmCore::piSoundEngine *sound, ImmCore::piLog *log, ImmImporter::Layer *la,
-								float masterVolume) override = 0;
-
 		virtual void PrepareForDisplay(StereoMode stereoMode) override = 0;
 
 		virtual void

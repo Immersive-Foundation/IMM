@@ -61,12 +61,12 @@ namespace ImmPlayer
 #include "shader_pip360Equirect_vs.glsl"
 #include "shader_pip360Equirect_fs.glsl"
 #elif defined(ANDROID)
-#include "shader_pi2D_vs.es.glsl"
-#include "shader_pi2D_fs.es.glsl"
-#include "shader_pip360Cubemap_vs.es.glsl"
-#include "shader_pip360Cubemap_fs.es.glsl"
-#include "shader_pip360Equirect_vs.es.glsl"
-#include "shader_pip360Equirect_fs.es.glsl"
+#include "gles/shader_pi2D_vs.es.glsl"
+#include "gles/shader_pi2D_fs.es.glsl"
+#include "gles/shader_pip360Cubemap_vs.es.glsl"
+#include "gles/shader_pip360Cubemap_fs.es.glsl"
+#include "gles/shader_pip360Equirect_vs.es.glsl"
+#include "gles/shader_pip360Equirect_fs.es.glsl"
 #endif
 
     // Creates a cube with 6 sides of 16x16 quads each. Note, the sides do NOT share the verties
@@ -590,10 +590,6 @@ namespace ImmPlayer
 
 
         return true;
-    }
-
-    void LayerRendererPicture::GlobalWork(piRenderer* renderer, piSoundEngine* sound, piLog* log, Layer* la, float masterVolume)
-    {
     }
 
     void LayerRendererPicture::PrepareForDisplay(StereoMode stereoMode)

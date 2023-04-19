@@ -157,12 +157,15 @@ struct ImmUnityPlugin
 		{
 			int          mStereoType;    // 0=mono, 1=two pass, 2=single pass
 			int          mCurrentEye;
+            bool         mHasAudioListener;
 			mat4x4       mWorld2Head;
 			mat4x4       mWorld2LEye;
 			mat4x4       mWorld2REye;
 			mat4x4       mHeadProjection;
 			mat4x4       mLEyeProjection;
 			mat4x4       mREyeProjection;
+            int* mDocVisible;
+
 		}mCamera[256];
 	}FromUnity;
 
@@ -210,8 +213,8 @@ static void UNITY_INTERFACE_API iOnGraphicsDeviceEvent(UnityGfxDeviceEventType e
 #else
 		if (apiType == kUnityGfxRendererOpenGLES30)
 		{
-			gImmPlayerPlugin.UnityAPI.mDevice = nullptr;
-			gImmPlayerPlugin.IMM.mLog.Printf(LT_MESSAGE, L"kUnityGfxDeviceEventInitialize using OpenGL ES 3.0 device");
+			gImmUnityPlugin.UnityAPI.mDevice = nullptr;
+			gImmUnityPlugin.IMM.mLog.Printf(LT_MESSAGE, L"kUnityGfxDeviceEventInitialize using OpenGL ES 3.0 device");
 		}
 #endif
 	}
@@ -232,12 +235,19 @@ static void UNITY_INTERFACE_API iOnRenderEvent(int event_id)
 	const int stereoType = gImmUnityPlugin.FromUnity.mCamera[cameraID].mStereoType;
 	const ivec2 res = ivec2(int(oldVp[2]), int(oldVp[3]));
 
+	//gImmUnityPlugin.IMM.mLog.Printf(LT_MESSAGE, L"    Rendering Camera %d, StereoType = %d, % d x%d", cameraID, stereoType, res.x, res.y);
+	
+	// Unity is left-handed coordinate system. conversion here
+	trans3d worldToHead = fromMatrix(f2d(gImmUnityPlugin.FromUnity.mCamera[cameraID].mWorld2Head));
+	//worldToHead.mTranslation.z *= -1;
+	//worldToHead.mRotation.x *= -1;
+	//worldToHead.mRotation.y *= -1;
+
 	if (stereoType == 0) // mono
 	{
 
-		gImmUnityPlugin.IMM.mPlayer.GlobalRender(fromMatrix(f2d(gImmUnityPlugin.FromUnity.mCamera[cameraID].mWorld2Head)),
-            fromMatrix(f2d(gImmUnityPlugin.FromUnity.mCamera[cameraID].mWorld2Head)),
-            gImmUnityPlugin.FromUnity.mCamera[cameraID].mHeadProjection, StereoMode::None);
+		gImmUnityPlugin.IMM.mPlayer.GlobalRender(worldToHead, worldToHead,
+            gImmUnityPlugin.FromUnity.mCamera[cameraID].mHeadProjection, StereoMode::None, gImmUnityPlugin.FromUnity.mCamera->mDocVisible);
 		gImmUnityPlugin.IMM.mPlayer.RenderMono(res,0);
 	}
 	else if (stereoType == 1) // two pass stereo
@@ -246,9 +256,8 @@ static void UNITY_INTERFACE_API iOnRenderEvent(int event_id)
 		const int eyeID = gImmUnityPlugin.FromUnity.mCamera[cameraID].mCurrentEye & 1;
 		gImmUnityPlugin.FromUnity.mCamera[cameraID].mCurrentEye++;
 
-        gImmUnityPlugin.IMM.mPlayer.GlobalRender(fromMatrix(f2d(gImmUnityPlugin.FromUnity.mCamera[cameraID].mWorld2Head)),
-            fromMatrix(f2d(gImmUnityPlugin.FromUnity.mCamera[cameraID].mWorld2Head)),
-            gImmUnityPlugin.FromUnity.mCamera[cameraID].mHeadProjection, StereoMode::Fallback);
+        gImmUnityPlugin.IMM.mPlayer.GlobalRender(worldToHead, worldToHead,
+            gImmUnityPlugin.FromUnity.mCamera[cameraID].mHeadProjection, StereoMode::Fallback, gImmUnityPlugin.FromUnity.mCamera->mDocVisible);
 
 		if (eyeID == 0) // left eye
 		{
@@ -295,14 +304,18 @@ static void UNITY_INTERFACE_API iOnRenderEvent(int event_id)
 
 		//const mat4x4d flz = mat4x4d(1.0, 0.0, 0.0, 0.0, 0.0, 1.0, 0.0, 0.0, 0.0, 0.0, -1.0, 0.0, 0.0, 0.0, 0.0, 1.0);
 
-		gImmUnityPlugin.IMM.mPlayer.GlobalRender(fromMatrix(f2d(gImmUnityPlugin.FromUnity.mCamera[cameraID].mWorld2Head)), fromMatrix(f2d(gImmUnityPlugin.FromUnity.mCamera[cameraID].mWorld2Head)), gImmUnityPlugin.FromUnity.mCamera[cameraID].mHeadProjection, StereoMode::Preferred);
+		gImmUnityPlugin.IMM.mPlayer.GlobalRender(worldToHead, worldToHead, gImmUnityPlugin.FromUnity.mCamera[cameraID].mHeadProjection, StereoMode::Preferred, gImmUnityPlugin.FromUnity.mCamera->mDocVisible);
 		const mat4x4d head_to_lEye = f2d(gImmUnityPlugin.FromUnity.mCamera[cameraID].mWorld2LEye) * invert(f2d(gImmUnityPlugin.FromUnity.mCamera[cameraID].mWorld2Head));
 		const mat4x4d head_to_rEye = f2d(gImmUnityPlugin.FromUnity.mCamera[cameraID].mWorld2REye) * invert(f2d(gImmUnityPlugin.FromUnity.mCamera[cameraID].mWorld2Head));
 		gImmUnityPlugin.IMM.mPlayer.RenderStereoSinglePass( res, head_to_lEye, gImmUnityPlugin.FromUnity.mCamera[cameraID].mLEyeProjection,
  			                                                          head_to_rEye, gImmUnityPlugin.FromUnity.mCamera[cameraID].mREyeProjection);
 		gImmUnityPlugin.IMM.mRenderer->SetViewports(1, oldVp);
 	}
-    gImmUnityPlugin.IMM.mSoundBackend->Tick();
+	// only tick sound once per frame
+	if (gImmUnityPlugin.FromUnity.mCamera[cameraID].mHasAudioListener)
+	{
+		gImmUnityPlugin.IMM.mSoundBackend->Tick();
+	}
 
 }
 
@@ -351,18 +364,20 @@ static mat4x4 iUnityToPilibs(const float *m)
 
 extern "C" void UNITY_INTERFACE_EXPORT UNITY_INTERFACE_API GlobalWork(int enabled)
 {
-    gImmUnityPlugin.IMM.mPlayer.GlobalWork(enabled == 1, 9000);
+    gImmUnityPlugin.IMM.mPlayer.GlobalWork(enabled == 1, 9000, true);
 }
 
-extern "C" void UNITY_INTERFACE_EXPORT UNITY_INTERFACE_API SetMatrices( int cameraID, int stereoType,
+extern "C" void UNITY_INTERFACE_EXPORT UNITY_INTERFACE_API SetMatrices( int cameraID, int stereoType, bool hasAudioListener,
 	                                                                    float *world2head, float *prjHead,
 	                                                                    float *world2leye, float *prjLeft,
-	                                                                    float *world2reye, float *prjRight )
+	                                                                    float *world2reye, float *prjRight,
+																		int* docVisible)
 {
 	if (cameraID > 255)return;
 
 	gImmUnityPlugin.FromUnity.mCamera[cameraID].mStereoType = stereoType;
 	gImmUnityPlugin.FromUnity.mCamera[cameraID].mCurrentEye = 0;
+	gImmUnityPlugin.FromUnity.mCamera[cameraID].mHasAudioListener = hasAudioListener;
 
 	if(world2head !=nullptr ) gImmUnityPlugin.FromUnity.mCamera[cameraID].mWorld2Head = iUnityToPilibs(world2head);
 	if(world2leye != nullptr) gImmUnityPlugin.FromUnity.mCamera[cameraID].mWorld2LEye = iUnityToPilibs(world2leye);
@@ -370,6 +385,8 @@ extern "C" void UNITY_INTERFACE_EXPORT UNITY_INTERFACE_API SetMatrices( int came
 	if(prjHead    !=nullptr ) gImmUnityPlugin.FromUnity.mCamera[cameraID].mHeadProjection = iUnityToPilibs(prjHead);
 	if(prjLeft    !=nullptr ) gImmUnityPlugin.FromUnity.mCamera[cameraID].mLEyeProjection = iUnityToPilibs(prjLeft);
 	if(prjRight   !=nullptr ) gImmUnityPlugin.FromUnity.mCamera[cameraID].mREyeProjection = iUnityToPilibs(prjRight);
+    if (docVisible != nullptr) gImmUnityPlugin.FromUnity.mCamera[cameraID].mDocVisible = docVisible;
+
 }
 
 extern "C" int UNITY_INTERFACE_EXPORT UNITY_INTERFACE_API Init( int colorSpace, // 0=linear 1=gamma
@@ -433,7 +450,7 @@ extern "C" int UNITY_INTERFACE_EXPORT UNITY_INTERFACE_API Init( int colorSpace, 
 
 #if defined(__ANDROID__) || defined(ANDROID)
 	const piRenderer::API api = piRenderer::API::GLES;
-	gImmPlayerPlugin.IMM.mRenderReporter = nullptr;
+	gImmUnityPlugin.IMM.mRenderReporter = nullptr;
 #else
 	const piRenderer::API api = (gImmUnityPlugin.UnityAPI.mDevice == nullptr) ? piRenderer::API::GL : piRenderer::API::DX;
 	gImmUnityPlugin.IMM.mRenderReporter = new MainRenderReporter(&gImmUnityPlugin.IMM.mLog);
@@ -449,7 +466,7 @@ extern "C" int UNITY_INTERFACE_EXPORT UNITY_INTERFACE_API Init( int colorSpace, 
     gImmUnityPlugin.IMM.mLog.Printf(LT_DEBUG, L"Renderer created successfully");
 
 #if defined(__ANDROID__) || defined(ANDROID)
-	if (!gImmPlayerPlugin.IMM.mRenderer->Initialize(0, nullptr, 1, false, false, gImmPlayerPlugin.IMM.mRenderReporter, false, nullptr, nullptr))
+	if (!gImmUnityPlugin.IMM.mRenderer->Initialize(0, nullptr, 1, false, false, gImmUnityPlugin.IMM.mRenderReporter, false, nullptr))
 #else
     if (!gImmUnityPlugin.IMM.mRenderer->Initialize(0, nullptr, 0, true, false, gImmUnityPlugin.IMM.mRenderReporter, false, gImmUnityPlugin.UnityAPI.mDevice))
 #endif
@@ -462,12 +479,12 @@ extern "C" int UNITY_INTERFACE_EXPORT UNITY_INTERFACE_API Init( int colorSpace, 
 	// PLAYER
     Player::Configuration conf;
 #if defined(__ANDROID__) || defined(ANDROID)
-    conf.colorSpace = ColorSpace::Gamma;
+    conf.colorSpace = static_cast<ColorSpace>(colorSpace);
     conf.depthBuffer = DepthBuffer::Linear01;
     conf.clipDepth = ClipSpaceDepth::FromNegativeOneToOne;
     conf.projectionMatrix = ClipSpaceDepth::FromNegativeOneToOne;
     conf.frontIsCCW = true;
-    conf.paintRenderingTechnique = PaintRenderingTechnique::Static;
+    conf.paintRenderingTechnique = Drawing::PaintRenderingTechnique::Static;
 #else
     conf.colorSpace = static_cast<Drawing::ColorSpace>(colorSpace);
     gImmUnityPlugin.IMM.mLog.Printf(LT_DEBUG, L"ColorSpace: %s", conf.colorSpace == Drawing::ColorSpace::Gamma ? L"Gamma" : L"Linear" );
@@ -541,7 +558,7 @@ extern "C" void UNITY_INTERFACE_EXPORT Unload(int id)
 
 extern "C" void UNITY_INTERFACE_EXPORT UNITY_INTERFACE_API SetDocumentToWorld(int id, float *doc2world)
 {
-	gImmUnityPlugin.IMM.mPlayer.SetDocumentToWorld(id, fromMatrix(f2d(iUnityToPilibs(doc2world)) * mat4x4d::flipZ()));
+	gImmUnityPlugin.IMM.mPlayer.SetDocumentToWorld(id, fromMatrix(f2d(iUnityToPilibs(doc2world))) * trans3d::flipZ());
 }
 
 extern "C" void UNITY_INTERFACE_EXPORT Pause(int id)

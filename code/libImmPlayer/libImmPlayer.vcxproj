@@ -250,25 +250,15 @@
   <ItemGroup>
     <None Include="src\layerRenderers\layerRendererModel\shader_model_fs.glsl" />
     <None Include="src\layerRenderers\layerRendererModel\shader_model_vs.glsl" />
-    <None Include="src\layerRenderers\layerRendererPaint\pretessellated\shader_pretessellated_brush_fs.es.glsl" />
     <None Include="src\layerRenderers\layerRendererPaint\pretessellated\shader_pretessellated_brush_fs.glsl" />
-    <None Include="src\layerRenderers\layerRendererPaint\pretessellated\shader_pretessellated_brush_vs.es.glsl" />
     <None Include="src\layerRenderers\layerRendererPaint\pretessellated\shader_pretessellated_brush_vs.glsl" />
-    <None Include="src\layerRenderers\layerRendererPaint\static\shader_static_brush_fs.es.glsl" />
     <None Include="src\layerRenderers\layerRendererPaint\static\shader_static_brush_fs.glsl" />
-    <None Include="src\layerRenderers\layerRendererPaint\static\shader_static_brush_vs.es.glsl" />
     <None Include="src\layerRenderers\layerRendererPaint\static\shader_static_brush_vs.glsl" />
-    <None Include="src\layerRenderers\layerRendererPicture\shader_pi2D_fs.es.glsl" />
     <None Include="src\layerRenderers\layerRendererPicture\shader_pi2D_fs.glsl" />
-    <None Include="src\layerRenderers\layerRendererPicture\shader_pi2D_vs.es.glsl" />
     <None Include="src\layerRenderers\layerRendererPicture\shader_pi2D_vs.glsl" />
-    <None Include="src\layerRenderers\layerRendererPicture\shader_pip360Cubemap_fs.es.glsl" />
     <None Include="src\layerRenderers\layerRendererPicture\shader_pip360Cubemap_fs.glsl" />
-    <None Include="src\layerRenderers\layerRendererPicture\shader_pip360Cubemap_vs.es.glsl" />
     <None Include="src\layerRenderers\layerRendererPicture\shader_pip360Cubemap_vs.glsl" />
-    <None Include="src\layerRenderers\layerRendererPicture\shader_pip360Equirect_fs.es.glsl" />
     <None Include="src\layerRenderers\layerRendererPicture\shader_pip360Equirect_fs.glsl" />
-    <None Include="src\layerRenderers\layerRendererPicture\shader_pip360Equirect_vs.es.glsl" />
     <None Include="src\layerRenderers\layerRendererPicture\shader_pip360Equirect_vs.glsl" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
